@@ -120,6 +120,8 @@ var athletics = (function( app, $ ) {
 		
 		function _init_data_points() {
 			
+			var line_width = 30;
+			
 			//styling for datapoint set
 			$datapoints.css({
 				'position': 'absolute',
@@ -135,68 +137,102 @@ var athletics = (function( app, $ ) {
 				var $this = $(this),
 					point_html ='',
 					pos_left = $this.data('x'),
-					pos_top = $this.data('y');
-			
+					pos_top = $this.data('y'),
+					offset = $this.data('offset'),
+					line_width = 15,
+					point_diameter = 10;	
 				
-				if(!$this.hasClass('.i_s_point_initialized')) {
+				if (!$this.hasClass('.i_s_point_initialized')) {
 					
-					point_html += '<div class="point_plotter">' +
-						'<span class="point"></span>' +
-						'<div class="line left"></div>' + 
-						'<div class="line center"></div>' + 
-						'<div class="line right"></div>' + 
+					point_html += '<div class="i_s_point_plotter">' +
+						'<span class="i_s_point"></span>' +
+						'<div class="i_s_line_container">' +
+							'<div class="i_s_line i_s_left"></div>' + 
+							'<div class="i_s_line i_s_center"></div>' + 
+							'<div class="i_s_line i_s_right"></div>' +
+						'</div>' +
 					'</div>';
 					
-					$this.html(point_html).addClass('.i_s_point_initialized');
-				}
+					//append plotter to each data point
+					$this.append(point_html).addClass('.i_s_point_initialized');
+										
+					//style point & point plot lines
+					$this.find('.i_s_point_plotter').css({
+						'position': 'absolute',
+						'left': 0,
+						'top': 0,
+					});
+
+					$this.find('.i_s_point_plotter span.i_s_point').css({
+						'width': point_diameter + 'px',
+						'height': point_diameter + 'px',
+						'background': 'red',
+						'position': 'absolute',
+						'left': 0,
+						'top': 0,
+					})
+					
+					$this.find('.i_s_point_plotter .i_s_line_container').css({
+						'position': 'absolute',
+						'top': Math.floor(point_diameter/2) +'px',
+						'left': point_diameter + 'px'
+					})
+					
+					$this.find('.i_s_point_plotter .i_s_line').css({
+						'height': '1px',
+						'width': line_width + 'px',
+						'background': 'red',
+						'position': 'absolute',
+						'top': '0',
+						'left': '0'
+					});
+					
+					
+					$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
+						'left': line_width + 'px',
+						'width':'1px',
+						'height': Math.abs(offset) + 'px',
+					});
+					
+					if (offset < 0) {
+						$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
+							'top': offset + 'px'
+						});
+					} else {
+						$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
+							'top': 0
+						});
+					}
+
+					$this.find('.i_s_point_plotter .i_s_line.i_s_right').css({
+						'left': line_width + 'px',
+						'top': offset + 'px'
+					});
 				
-				//style point & point plot lines
-				$this.find('.point_plotter').css({
-					'position': 'absolute',
-					'left': pos_left + 'px',
-					'top': pos_top + 'px',
-				});
-				
-				$this.find('.point_plotter span.point').css({
-					'width': '10px',
-					'height': '10px',
-					'background': 'red',
-					'position': 'absolute',
-					'left': 0,
-					'top': 0,
-				})
-				
-				$this.find('.point_plotter .line').css({
-					'height': '1px',
-					'width': '15px',
-					'background': 'red',
-					'position': 'absolute',
-					'top': '5px',
-					'left': '10px'
-				});
-				
-				$this.find('.point_plotter .line.center').css({
-					'left': '25px',
-					'width':'1px',
-					'height':'10px'
-				});
-				
-				$this.find('.point_plotter .line.right').css({
-					'left': '26px'
-				});
+				};
 				
 				
 				//set up basic styling for default view
 				$this.css({
 					'display':'block',
+					'position': 'absolute',
+					'left': pos_left + 'px',
+					'top': pos_top + 'px',
 				});
 				
-				$this.find('h3').css({
+				$this.find('.i_s_body').css({
+					'position': 'absolute',
+					'left': 2*line_width + point_diameter + 'px',
+					'top': offset + 'px',
+					'width':'480px',
+				})
+				
+				$this.find('.i_s_body h3').css({
 					'font': 'normal 16px/20px Georgia, serif',
 					'margin': '5px 0 0'
 				})
 				
-				$this.find('h5').css({
+				$this.find('.i_s_body h5').css({
 					'font': 'normal 11px/13px Verdana, arial, sans-serif',
 					'text-transform':'uppercase',
 					'color': '#999',

@@ -1,11 +1,11 @@
 /*
- * 		Athletics Infostory js module:
- * 			infostory.js
+ *		Athletics Infostory js module:
+ *			infostory.js
  *
  *		desc:
- * 		
- * 		requires:
- * 			jQuery
+ *
+ *		requires:
+ *			jQuery
  */
 
 var athletics = (function( app, $ ) {
@@ -91,7 +91,7 @@ var athletics = (function( app, $ ) {
 				'cursor' : 'pointer'
 			});
 			
-			$controls.find('div.option span.i_s_label').css({
+			$controls.find('div.i_s_option span.i_s_label').css({
 				'padding' : '3px 10px',
 				'display' : 'block'
 			});
@@ -141,7 +141,7 @@ var athletics = (function( app, $ ) {
 				'left' : 0
 			});
 			
-			$bgs.find('span.bg').css({
+			$bgs.find('span.i_s_bg').css({
 				'position' : 'absolute',
 				'top' : 0,
 				'left' : 0
@@ -157,7 +157,7 @@ var athletics = (function( app, $ ) {
 		
 		function _change_bg( id ) {
 			
-			$bgs.find('span.bg')
+			$bgs.find('span.i_s_bg')
 				.show()
 				.stop()
 				.animate({
@@ -166,7 +166,7 @@ var athletics = (function( app, $ ) {
 					'duration' : 300
 				});
 			
-			var $target = $bgs.find('span.bg[data-id="'+ id +'"]');
+			var $target = $bgs.find('span.i_s_bg[data-id="'+ id +'"]');
 			
 			$target
 				.show()
@@ -185,7 +185,7 @@ var athletics = (function( app, $ ) {
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _reset_bg_controls() {
-			$controls.find('div.option').css({
+			$controls.find('div.i_s_option').css({
 				'background-color' : 'black'
 			});
 		}
@@ -196,7 +196,7 @@ var athletics = (function( app, $ ) {
 			
 			_reset_bg_controls();
 			
-			var $target = $controls.find('div.option[data-id="'+ id +'"]');
+			var $target = $controls.find('div.i_s_option[data-id="'+ id +'"]');
 			
 			$target.css({
 				'background-color' : 'blue'

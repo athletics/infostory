@@ -120,7 +120,6 @@ var athletics = (function( app, $ ) {
 		
 		function _init_data_points() {
 			
-			
 			//styling for datapoint set
 			$datapoints.css({
 				'position': 'absolute',
@@ -131,10 +130,85 @@ var athletics = (function( app, $ ) {
 			
 			$datapoints.find('div.i_s_datapoint').each(function(){
 				
-				_reset_datapoint_styling();
+				//_reset_datapoint_styling();
 				
-				var $this = $(this);
+				var $this = $(this),
+					point_html ='',
+					pos_left = $this.data('x'),
+					pos_top = $this.data('y');
+			
 				
+				if(!$this.hasClass('.i_s_point_initialized')) {
+					
+					point_html += '<div class="point_plotter">' +
+						'<span class="point"></span>' +
+						'<div class="line left"></div>' + 
+						'<div class="line center"></div>' + 
+						'<div class="line right"></div>' + 
+					'</div>';
+					
+					$this.html(point_html).addClass('.i_s_point_initialized');
+				}
+				
+				//style point & point plot lines
+				$this.find('.point_plotter').css({
+					'position': 'absolute',
+					'left': pos_left + 'px',
+					'top': pos_top + 'px',
+				});
+				
+				$this.find('.point_plotter span.point').css({
+					'width': '10px',
+					'height': '10px',
+					'background': 'red',
+					'position': 'absolute',
+					'left': 0,
+					'top': 0,
+				})
+				
+				$this.find('.point_plotter .line').css({
+					'height': '1px',
+					'width': '15px',
+					'background': 'red',
+					'position': 'absolute',
+					'top': '5px',
+					'left': '10px'
+				});
+				
+				$this.find('.point_plotter .line.center').css({
+					'left': '25px',
+					'width':'1px',
+					'height':'10px'
+				});
+				
+				$this.find('.point_plotter .line.right').css({
+					'left': '26px'
+				});
+				
+				
+				//set up basic styling for default view
+				$this.css({
+					'display':'block',
+				});
+				
+				$this.find('h3').css({
+					'font': 'normal 16px/20px Georgia, serif',
+					'margin': '5px 0 0'
+				})
+				
+				$this.find('h5').css({
+					'font': 'normal 11px/13px Verdana, arial, sans-serif',
+					'text-transform':'uppercase',
+					'color': '#999',
+					'margin': 0
+				})
+				
+				//don't show the details of each point yet
+				$this.find('.i_s_detail').css({
+					'display':'none'
+				});
+				
+				/*
 				//attach mouseenter
 				$this.unbind('mouseenter').bind('mouseenter', function(){
 					
@@ -160,7 +234,7 @@ var athletics = (function( app, $ ) {
 					
 					_reset_datapoint_styling();
 				
-				});
+				}); */
 				
 			});
 					
@@ -168,7 +242,7 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _reset_datapoint_styling() {
+		/*function _reset_datapoint_styling() {
 			
 			$datapoints.find('div.i_s_datapoint').each(function(){
 				
@@ -212,7 +286,7 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _reveal_datapoint_details( $this ) {
+		/*function _reveal_datapoint_details( $this ) {
 						
 			$this.css({
 				'width': '480px',

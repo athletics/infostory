@@ -30,6 +30,7 @@ var athletics = (function( app, $ ) {
 			if ($obj.length != 1) return false;
 			
 			_init_controls();
+			_init_data_points();
 			_init_bgs();
 			_init_border();
 			_init_credit();
@@ -114,6 +115,83 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
+		function _init_data_points() {
+			
+			$datapoints = $obj.find('div.i_s_datapoints');
+			
+			//styling for datapoint set
+			$datapoints.css({
+				'position': 'absolute',
+				'top': 0,
+				'left': 0,
+				'z-index': 3 
+			})
+			
+			$datapoints.find('div.i_s_datapoint').each(function(){
+				
+				var $this = $(this);
+				
+				//set up basic styling for default view
+				$this.css({
+					'display':'block',
+					'width': '500px',
+					'position':'absolute',
+					'top': $this.data('y') + 'px',
+					'left': $this.data('x') + 'px',
+					'padding' : '5px'
+				});
+				
+				$this.find('h3').css({
+					'font': 'normal 16px/20px Georgia, serif',
+					'margin': '5px 0'
+				})
+				
+				$this.find('span.i_s_date').css({
+					'font': 'normal 11px/13px Verdana, arial, sans-serif',
+					'text-transform':'uppercase',
+					'color': '#999',
+				})
+				
+				//don't show the details of each point yet
+				$this.find('.i_s_detail').css({
+					'display':'none'
+				});
+				
+				//attach mouseenter
+				$this.unbind('mouseenter').bind('mouseenter', function(){
+					
+					//add background color and shadow
+					$this.css({
+						'background': '#fff',
+						'-moz-box-shadow': '0 0 5px #666',
+						'-webkit-box-shadow': '0 0 5px #666',
+						'box-shadow': '0 0 5px #666',
+						'cursor': 'pointer'
+					});
+					
+					
+				});
+				
+				//attach mouseleave
+				$this.unbind('mouseleave').bind('mouseleave', function(){
+					
+					//remove background color and shadow
+					$this.css({
+						'background': 'none',
+						'-moz-box-shadow': 'none',
+						'-webkit-box-shadow': 'none',
+						'box-shadow': 'none'
+					});
+				})
+				
+			})
+			
+		
+		
+		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
 		function _init_bgs() {
 			
 			$bgs = $obj.find('div.i_s_backgrounds');
@@ -137,7 +215,7 @@ var athletics = (function( app, $ ) {
 			$bgs.css({
 				'position' : 'absolute',
 				'z-index' : 1,
-				'top' : 0,
+				'top' : '70px',
 				'left' : 0
 			});
 			

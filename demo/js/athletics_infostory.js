@@ -54,7 +54,7 @@ var athletics = (function( app, $ ) {
 			
 			if (!$obj.data('use-border')) return false;
 			
-			$border = $obj.find('div.infostory_border');
+			$border = $obj.find('div.i_s_border');
 			
 			$border.css({
 				'border' : '1px solid #ccc',
@@ -71,7 +71,7 @@ var athletics = (function( app, $ ) {
 		
 		function _init_controls() {
 			
-			$controls = $obj.find('div.infostory_controls');
+			$controls = $obj.find('div.i_s_controls');
 			
 			// basic styling
 			$controls.css({
@@ -83,7 +83,7 @@ var athletics = (function( app, $ ) {
 			});
 			
 			// general styling on controls
-			$controls.find('div.option').css({
+			$controls.find('div.i_s_option').css({
 				'color' : '#ffffff',
 				'font-size' : '12px',
 				'font-family' : 'Arial',
@@ -91,19 +91,19 @@ var athletics = (function( app, $ ) {
 				'cursor' : 'pointer'
 			});
 			
-			$controls.find('div.option span.label').css({
+			$controls.find('div.option span.i_s_label').css({
 				'padding' : '3px 10px',
 				'display' : 'block'
 			});
 			
 			// position controls
-			$controls.find('div.option').css({
+			$controls.find('div.i_s_option').css({
 				'float' : 'left',
 				'margin-right' : '5px'
 			});
 			
 			// attach events
-			$controls.find('div.option').on('click',function(){
+			$controls.find('div.i_s_option').on('click',function(){
 				var $this = $(this);
 				_change_bg(
 					$this.data('id')
@@ -116,20 +116,20 @@ var athletics = (function( app, $ ) {
 		
 		function _init_bgs() {
 			
-			$bgs = $obj.find('div.infostory_backgrounds');
+			$bgs = $obj.find('div.i_s_backgrounds');
 			
-			$bgs.find('span.bg').each(function(){
+			$bgs.find('span.i_s_bg').each(function(){
 
 				var $this = $(this),
 					bg_html = '';
 				
-				if (!$this.hasClass('bg_initialized')) {
+				if (!$this.hasClass('i_s_bg_initialized')) {
 					
 					bg_html += '<img src="'+ $this.data('img-src') +'" alt="">';
 					
 					$this
 						.html( bg_html )
-						.addClass('bg_initialized');
+						.addClass('i_s_bg_initialized');
 				}
 			});
 			
@@ -149,7 +149,7 @@ var athletics = (function( app, $ ) {
 			
 			// reveal default bg
 			_change_bg(
-				$bgs.find('span.bg.default').data('id')
+				$bgs.find('span.i_s_bg.i_s_default').data('id')
 			);
 		}
 		
@@ -207,7 +207,7 @@ var athletics = (function( app, $ ) {
 		
 		function _init_credit() {
 			
-			$credit = $obj.find('div.infostory_credit');
+			$credit = $obj.find('div.i_s_credit');
 			
 			$credit.css({
 				'width' : $obj.data('width'),
@@ -223,7 +223,7 @@ var athletics = (function( app, $ ) {
 				'line-height' : '18px'
 			});
 			
-			$credit.find('span.infostory_copy').css({
+			$credit.find('span.i_s_copy').css({
 				'display' : 'block',
 				'padding-top' : '5px',
 				'padding-right' : '10px'

@@ -19,13 +19,16 @@ var athletics = (function( app, $ ) {
 			$bgs = null,
 			$controls = null,
 			$border = null,
-			$credit = null;
+			$credit = null,
+			$datapoints = null;
 			
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _init() {
 
 			$obj = $('div.athletics.infostory[data-infostory-name="demo"]');
+			
+			$datapoints = $obj.find('div.i_s_datapoints');
 			
 			if ($obj.length != 1) return false;
 			
@@ -117,7 +120,6 @@ var athletics = (function( app, $ ) {
 		
 		function _init_data_points() {
 			
-			$datapoints = $obj.find('div.i_s_datapoints');
 			
 			//styling for datapoint set
 			$datapoints.css({
@@ -129,33 +131,9 @@ var athletics = (function( app, $ ) {
 			
 			$datapoints.find('div.i_s_datapoint').each(function(){
 				
+				_reset_datapoint_styling();
+				
 				var $this = $(this);
-				
-				//set up basic styling for default view
-				$this.css({
-					'display':'block',
-					'width': '500px',
-					'position':'absolute',
-					'top': $this.data('y') + 'px',
-					'left': $this.data('x') + 'px',
-					'padding' : '5px'
-				});
-				
-				$this.find('h3').css({
-					'font': 'normal 16px/20px Georgia, serif',
-					'margin': '5px 0'
-				})
-				
-				$this.find('span.i_s_date').css({
-					'font': 'normal 11px/13px Verdana, arial, sans-serif',
-					'text-transform':'uppercase',
-					'color': '#999',
-				})
-				
-				//don't show the details of each point yet
-				$this.find('.i_s_detail').css({
-					'display':'none'
-				});
 				
 				//attach mouseenter
 				$this.unbind('mouseenter').bind('mouseenter', function(){
@@ -169,26 +147,125 @@ var athletics = (function( app, $ ) {
 						'cursor': 'pointer'
 					});
 					
-					
+					//attach click events
+					$this.unbind('click').bind('click', function(){
+						
+						_reveal_datapoint_details( $this );
+						
+					})
 				});
 				
 				//attach mouseleave
 				$this.unbind('mouseleave').bind('mouseleave', function(){
 					
-					//remove background color and shadow
-					$this.css({
-						'background': 'none',
-						'-moz-box-shadow': 'none',
-						'-webkit-box-shadow': 'none',
-						'box-shadow': 'none'
-					});
+					_reset_datapoint_styling();
+				
+				});
+				
+			});
+					
+		};
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _reset_datapoint_styling() {
+			
+			$datapoints.find('div.i_s_datapoint').each(function(){
+				
+				var $this = $(this);
+				
+				//set up basic styling for default view
+				$this.css({
+					'display':'block',
+					'width': '480px',
+					'position':'absolute',
+					'top': $this.data('y') + 'px',
+					'left': $this.data('x') + 'px',
+					'padding' : '10px',
+					'background': 'none',
+					'-moz-box-shadow': 'none',
+					'-webkit-box-shadow': 'none',
+					'box-shadow': 'none',
+					'z-index': 3
+				});
+				
+				$this.find('h3').css({
+					'font': 'normal 16px/20px Georgia, serif',
+					'margin': '5px 0 0'
 				})
 				
+				$this.find('h5').css({
+					'font': 'normal 11px/13px Verdana, arial, sans-serif',
+					'text-transform':'uppercase',
+					'color': '#999',
+					'margin': 0
+				})
+				
+				//don't show the details of each point yet
+				$this.find('.i_s_detail').css({
+					'display':'none'
+				});
+			
+			});
+			
+		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _reveal_datapoint_details( $this ) {
+						
+			$this.css({
+				'width': '480px',
+				'z-index' : 10,
+			});
+			
+			$this.find('.i_s_detail').css({
+				'display': 'block',
+				'font': 'normal 15px/19px Georgia, serif'
+			});
+			
+			$this.find('.i_s_detail a').css({
+				'color': '#0F2D5F',
 			})
 			
-		
-		
-		}
+			$this.find('h3').css({
+				'font': 'bold 18px/22px Georgia, serif',
+				'margin': '10px 0'
+			});
+			
+			$this.find('img').css({
+				'width': '260px',
+				'height': '180px',
+				'float': 'right',
+				'border': '3px solid #ededed',
+				'margin': '0 0 10px 10px'
+			})
+			
+			$this.find('ul.i_s_related_links').css({
+				'list-style-type':'none',
+				'padding': '0',
+				'margin-top': '20px'
+			})
+			
+			$this.find('ul.i_s_related_links li').css({
+				'font': 'bold 13px/15px Georgia, serif',
+				'margin': '10px 0'
+			})
+			
+			$this.find('ul.i_s_related_links li a').css({
+				'text-decoration': 'none'
+			})
+			
+			$this.find('ul.i_s_related_links li a:hover').css({
+				'text-decoration': 'underline'
+			})
+			
+			//TEMPORARILY hide tweets
+			$this.find('ul.i_s_tweets').css({
+				'display': 'none'
+			})
+			
+		};
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		

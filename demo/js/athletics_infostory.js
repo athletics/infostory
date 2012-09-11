@@ -43,7 +43,8 @@ var athletics = (function( app, $ ) {
 				'position' : 'relative',
 				'width' : $obj.data('width'),
 				'height' : $obj.data('height'),
-				'font-size' : 0
+				'font-size' : 0,
+				'background-color' : '#ffffff'
 			});
 			
 			$obj.show();
@@ -134,7 +135,8 @@ var athletics = (function( app, $ ) {
 				
 				// setting variables for position and measurements
 				var $this = $(this),
-					point_html ='',
+					point_html = '',
+					$plotter = null,
 					pos_left = $this.data('x'),
 					pos_top = $this.data('y'),
 					offset = $this.data('offset'),
@@ -143,77 +145,76 @@ var athletics = (function( app, $ ) {
 					point_diameter = 10,
 					body_padding = 10;
 				
-				if (!$this.hasClass('.i_s_point_initialized')) {
-					
-					point_html += '<div class="i_s_point_plotter">';
-					point_html +=	'<span class="i_s_point"></span>';
-					point_html +=	'<div class="i_s_line_container">';
-					point_html +=		'<div class="i_s_line i_s_left"></div>';
-					point_html +=		'<div class="i_s_line i_s_center"></div>';
-					point_html +=		'<div class="i_s_line i_s_right"></div>';
-					point_html +=	'</div>';
-					point_html += '</div>';
-					
-					//append plotter to each data point
-					$this.append(point_html).addClass('.i_s_point_initialized');
-										
-					//style and position point plotter
-					$this.find('.i_s_point_plotter').css({
-						'position': 'absolute',
-						'left': 0,
-						'top': 0
-					});
-
-					$this.find('.i_s_point_plotter span.i_s_point').css({
-						'width': point_diameter + 'px',
-						'height': point_diameter + 'px',
-						'border-radius': '50%',
-						'background': '#000',
-						'position': 'absolute',
-						'left': 0,
-						'top': 0
-					});
-					
-					$this.find('.i_s_point_plotter .i_s_line_container').css({
-						'position': 'absolute',
-						'top': Math.floor(point_diameter/2) +'px',
-						'left': point_diameter + 'px'
-					});
-					
-					$this.find('.i_s_point_plotter .i_s_line').css({
-						'height': line_width + 'px',
-						'width': line_length + 'px',
-						'background': '#000',
-						'position': 'absolute',
-						'top': '0',
-						'left': '0'
-					});
-					
-					
-					$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
-						'left': line_length + 'px',
-						'width': line_width + 'px',
-						'height': Math.abs(offset) + 'px'
-					});
-					
-					if (offset < 0) {
-						$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
-							'top': offset + line_width + 'px'
-						});
-					} else {
-						$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
-							'top': 0
-						});
-					}
-
-					$this.find('.i_s_point_plotter .i_s_line.i_s_right').css({
-						'left': line_length + 'px',
-						'top': offset + 'px'
-					});
+				// create point
+				point_html += '<div class="i_s_point_plotter">';
+				point_html +=	'<span class="i_s_point"></span>';
+				point_html +=	'<div class="i_s_line_container">';
+				point_html +=		'<div class="i_s_line i_s_left"></div>';
+				point_html +=		'<div class="i_s_line i_s_center"></div>';
+				point_html +=		'<div class="i_s_line i_s_right"></div>';
+				point_html +=	'</div>';
+				point_html += '</div>';
 				
+				//append plotter to each data point
+				$this.append( point_html );
+
+				// set pointer
+				$plotter = $this.find('.i_s_point_plotter');
+									
+				//style and position point plotter
+				$plotter.css({
+					'position': 'absolute',
+					'left': 0,
+					'top': 0
+				});
+
+				$plotter.find('span.i_s_point').css({
+					'width': point_diameter + 'px',
+					'height': point_diameter + 'px',
+					'border-radius': '50%',
+					'background': '#000',
+					'position': 'absolute',
+					'left': 0,
+					'top': 0
+				});
+				
+				$plotter.find('.i_s_line_container').css({
+					'position': 'absolute',
+					'top': Math.floor(point_diameter/2) +'px',
+					'left': point_diameter + 'px'
+				});
+				
+				$plotter.find('.i_s_line').css({
+					'height': line_width + 'px',
+					'width': line_length + 'px',
+					'background': '#000000',
+					'position': 'absolute',
+					'top': '0',
+					'left': '0'
+				});
+				
+				
+				$plotter.find('.i_s_line.i_s_center').css({
+					'left': line_length + 'px',
+					'width': line_width + 'px',
+					'height': Math.abs(offset) + 'px'
+				});
+				
+				if (offset < 0) {
+					$plotter.find('.i_s_line.i_s_center').css({
+						'top': offset + line_width + 'px'
+					});
+				} else {
+					$plotter.find('.i_s_line.i_s_center').css({
+						'top': 0
+					});
 				}
-				
-				
+
+				$plotter.find('.i_s_line.i_s_right').css({
+					'left': line_length + 'px',
+					'top': offset + 'px'
+				});
+			
 				//set up basic styling for default view
 				$this.css({
 					'display':'block',
@@ -228,7 +229,7 @@ var athletics = (function( app, $ ) {
 				$this.find('.i_s_body').css({
 					'position': 'absolute',
 					'padding' : body_padding + 'px',
-					'left': 2*line_length + point_diameter + 'px',
+					'left': (2 * line_length) + point_diameter + 'px',
 					'top': offset - body_padding + 'px',
 					'max-width':'480px',
 					'z-index':'2'
@@ -250,7 +251,6 @@ var athletics = (function( app, $ ) {
 				$this.find('.i_s_detail').css({
 					'display':'none'
 				});
-				
 				
 				// attach mouseenter
 				$this.unbind('mouseenter').bind('mouseenter', function(){
@@ -622,7 +622,7 @@ var athletics = (function( app, $ ) {
 			
 		};
 		*/
-		
+
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _init_bgs() {

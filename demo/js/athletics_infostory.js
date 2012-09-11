@@ -20,7 +20,9 @@ var athletics = (function( app, $ ) {
 			$controls = null,
 			$border = null,
 			$credit = null,
-			$datapoints = null;
+			$datapoints = null,
+
+			_datapoint_body_padding = 10;
 			
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
@@ -177,8 +179,7 @@ var athletics = (function( app, $ ) {
 					offset = $this.data('offset'),
 					line_length = 15,
 					line_width = 1,
-					point_diameter = 10,
-					body_padding = 10;
+					point_diameter = 10;
 				
 				// create point
 				point_html += '<div class="i_s_point_plotter">';
@@ -263,9 +264,9 @@ var athletics = (function( app, $ ) {
 				
 				$this.find('.i_s_body').css({
 					'position': 'absolute',
-					'padding' : body_padding + 'px',
+					'padding' : _datapoint_body_padding + 'px',
 					'left': (2 * line_length) + point_diameter + 'px',
-					'top': offset - body_padding + 'px',
+					'top': offset - _datapoint_body_padding + 'px',
 					'max-width':'480px',
 					'z-index':'2'
 				});
@@ -303,11 +304,7 @@ var athletics = (function( app, $ ) {
 					
 					// attach click events
 					
-					$this.unbind('click').bind('click', function(){
-						
-						_launch_datapoint_details( $this, pos_left, pos_top, body_padding, offset );
-						
-					});
+					$this.off('click').on('click', _launch_datapoint_details );
 					
 				});
 				
@@ -332,11 +329,15 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _launch_datapoint_details( $this, pos_left, pos_top, body_padding, offset ) {
+		function _launch_datapoint_details() {
 						
-			var datapoint_content = $this.find('.i_s_body').html(),
+			var $this = $(this),
+				datapoint_content = $this.find('.i_s_body').html(),
 				detail_window_html = '',
-				$detail_window = $obj.find('.i_s_detail_window');
+				$detail_window = $obj.find('.i_s_detail_window'),
+				pos_left = $this.data('x'),
+				pos_top = $this.data('y'),
+				offset = $this.data('offset');
 				
 			//setting up basic detail_window styling
 			$detail_window.css({
@@ -346,7 +347,7 @@ var athletics = (function( app, $ ) {
 				'-moz-box-shadow': '0 0 5px #666',
 				'-webkit-box-shadow': '0 0 5px #666',
 				'box-shadow': '0 0 5px #666',
-				'padding': body_padding + 'px'
+				'padding': _datapoint_body_padding + 'px'
 			});
 			
 			$detail_window.find('span.i_s_arrow').css({
@@ -357,132 +358,111 @@ var athletics = (function( app, $ ) {
 				'top': '2px',
 				'background': 'url("img/sprite_arrows.png") no-repeat 0 0'
 			});
-				
-			// is the detail window already open?
+			
+			// add datapoint content
+			$detail_window.find('.i_s_detail_contents').html( datapoint_content );
+
+			//style contents
+			_style_detail_window();
+
+			// attach click events to close_btn
+			$detail_window.find('.i_s_close_btn').unbind('click').bind('click', function(){
+
+				$detail_window
+					.removeClass('window_open')
+					.hide();
+
+				$detail_window.find('.i_s_detail_contents').html('');
+
+			});
+
 			if ( !$detail_window.hasClass('window_open') ) {
-				
-				// no, populate and position it
-				
-				// add datapoint content
-				$detail_window.find('.i_s_detail_contents').html(datapoint_content);
-
-				// find initial heights & positions
-				var initial_height = $this.find('.i_s_body').height(),
-					initial_width = $this.find('.i_s_body').width(),
-					body_position = $this.find('.i_s_body').position();
-
-				// position detail window
-				$detail_window.css({
-					'display': 'block',
-					'width': initial_width + 'px',
-					'height': initial_height + 'px',
-					'top' : pos_top + body_position.top + 'px',
-					'left' : pos_left + body_position.left + 'px'
-				});
-				
-				//style contents
-				_style_detail_window();
-
-				// find height of content
-				var content_height = $detail_window.find('.i_s_detail_contents').height();
-				
-				//animate window
-				$detail_window.stop()
-					.animate({
-						'width' : '480px',
-						'height' : content_height + 'px'
-					},
-					{
-						'duration' : 200,
-						'complete' : function () {
-
-							$detail_window.addClass('window_open');
-							$detail_window.find('.i_s_close_btn').css({
-								'display': 'block'
-							});
-						}
-					});
-					
-				// style close_btn
-				$detail_window.find('.i_s_close_btn').css({
-					'display': 'none',
-					'position': 'absolute',
-					'width': '28px',
-					'height': '28px',
-					'background': 'url("img/sprite_close_btn.png") no-repeat 0 0',
-					'top': 0,
-					'right': 0,
-					'-webkit-border-radius': '50%',
-					'-moz-border-radius': '50%',
-					'border-radius': '50%',
-					'cursor':'pointer'
-				});
-				
-				// attach click events to close_btn
-				$detail_window.find('.i_s_close_btn').unbind('click').bind('click', function(){
-
-					$detail_window.removeClass('window_open');
-					$detail_window.css({
-						'display': 'none'
-					});
-
-					$detail_window.find('.i_s_detail_contents').html('');
-
-				});
-					
+				_reveal_datapoint( $this, $detail_window );
 			} else {
-				
-				//window is already open, we need to switch the content and move the position
-				
-				//hide old contents
-				$detail_window.find('.i_s_detail_contents').css({
-					'opacity': 0
+				_change_datapoint( $this, $detail_window );
+			}
+			
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _change_datapoint( $this, $detail_window ) {
+
+			var pos_top = $this.data('y'),
+				new_body_position = $this.find('.i_s_body').position(),
+				new_content_height = $detail_window.find('.i_s_detail_contents').height();
+
+			//hide old contents
+			$detail_window.find('.i_s_detail_contents').css({
+				'opacity': 0
+			});
+			
+			$detail_window
+				.stop()
+				.animate({
+					'top' : pos_top + new_body_position.top + 'px',
+					'height' : new_content_height + 'px'
+				},
+				{
+					'duration' : 200
 				});
 				
-				//replace with new contents
-				$detail_window.find('.i_s_detail_contents').html(datapoint_content);
-				
-				//style contents
-				_style_detail_window();
-			
-				//move position and animate height
-				var new_body_position = $this.find('.i_s_body').position(),
-					new_content_height = $detail_window.find('.i_s_detail_contents').height();
-				
-				$detail_window.stop()
-					.animate({
-						'top' : pos_top + new_body_position.top + 'px',
-						'height' : new_content_height + 'px'
-					},
-					{
-						'duration' : 300
-					});
-					
-				//reveal new contents
+			//reveal new contents
+			$detail_window.find('.i_s_detail_contents')
+				.stop()
+				.animate({
+					'opacity' : 1
+				},
+				{
+					'duration' : 200
+				});
 
-				$detail_window.find('.i_s_detail_contents')
-					.animate({
-						'opacity' : 1
-					},
-					{
-						'duration' : 300
-					});
-			}
-						
-			/*if ( $detail_window.length < 1 ) {
-				// no, let's make it
-				
-				detail_window_html += '<div class="i_s_detail_window">' +
-					'<span class="i_s_arrow"></span>' +
-					'<div class="i_s_detail_contents"></div>'
-				'</div>';
-				
-				$obj.append(detail_window_html);
-				
-				$detail_window = $obj.find('.i_s_detail_window');
-			}*/
+			$detail_window.find('.i_s_close_btn').css({
+				'display': 'block'
+			});
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _reveal_datapoint( $this, $detail_window ) {
+
+			// find initial heights & positions
+			var initial_height = $this.find('.i_s_body').height(),
+				initial_width = $this.find('.i_s_body').width(),
+				body_position = $this.find('.i_s_body').position(),
+				pos_left = $this.data('x'),
+				pos_top = $this.data('y'),
+				content_height = 0;
+
+			// position detail window
+			$detail_window.css({
+				'display': 'block',
+				'width': initial_width + 'px',
+				'height': initial_height + 'px',
+				'top' : pos_top + body_position.top + 'px',
+				'left' : pos_left + body_position.left + 'px'
+			});
 			
+			// find height of content
+			content_height = $detail_window.find('.i_s_detail_contents').height();
 			
+			// animate window
+			$detail_window.stop()
+				.animate({
+					'width' : '480px',
+					'height' : content_height + 'px'
+				},
+				{
+					'duration' : 200,
+					'complete' : function () {
+
+						$detail_window.addClass('window_open');
+						$detail_window.find('.i_s_close_btn').css({
+							'display': 'block'
+						});
+					}
+				});
+
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -554,6 +534,21 @@ var athletics = (function( app, $ ) {
 				'display': 'block',
 				'width': '100%',
 				'background': '#ededed'
+			});
+
+			// style close_btn
+			$detail_window.find('.i_s_close_btn').css({
+				'display': 'none',
+				'position': 'absolute',
+				'width': '28px',
+				'height': '28px',
+				'background': 'url("img/sprite_close_btn.png") no-repeat 0 0',
+				'top': 0,
+				'right': 0,
+				'-webkit-border-radius': '50%',
+				'-moz-border-radius': '50%',
+				'border-radius': '50%',
+				'cursor':'pointer'
 			});
 			
 		}

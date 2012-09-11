@@ -128,7 +128,7 @@ var athletics = (function( app, $ ) {
 				'left': 0,
 				'z-index': 3,
 				'width': '100%'
-			})
+			});
 			
 			$datapoints.find('div.i_s_datapoint').each(function(){
 				
@@ -145,14 +145,14 @@ var athletics = (function( app, $ ) {
 				
 				if (!$this.hasClass('.i_s_point_initialized')) {
 					
-					point_html += '<div class="i_s_point_plotter">' +
-						'<span class="i_s_point"></span>' +
-						'<div class="i_s_line_container">' +
-							'<div class="i_s_line i_s_left"></div>' + 
-							'<div class="i_s_line i_s_center"></div>' + 
-							'<div class="i_s_line i_s_right"></div>' +
-						'</div>' +
-					'</div>';
+					point_html += '<div class="i_s_point_plotter">';
+					point_html +=	'<span class="i_s_point"></span>';
+					point_html +=	'<div class="i_s_line_container">';
+					point_html +=		'<div class="i_s_line i_s_left"></div>';
+					point_html +=		'<div class="i_s_line i_s_center"></div>';
+					point_html +=		'<div class="i_s_line i_s_right"></div>';
+					point_html +=	'</div>';
+					point_html += '</div>';
 					
 					//append plotter to each data point
 					$this.append(point_html).addClass('.i_s_point_initialized');
@@ -161,7 +161,7 @@ var athletics = (function( app, $ ) {
 					$this.find('.i_s_point_plotter').css({
 						'position': 'absolute',
 						'left': 0,
-						'top': 0,
+						'top': 0
 					});
 
 					$this.find('.i_s_point_plotter span.i_s_point').css({
@@ -171,14 +171,14 @@ var athletics = (function( app, $ ) {
 						'background': '#000',
 						'position': 'absolute',
 						'left': 0,
-						'top': 0,
-					})
+						'top': 0
+					});
 					
 					$this.find('.i_s_point_plotter .i_s_line_container').css({
 						'position': 'absolute',
 						'top': Math.floor(point_diameter/2) +'px',
 						'left': point_diameter + 'px'
-					})
+					});
 					
 					$this.find('.i_s_point_plotter .i_s_line').css({
 						'height': line_width + 'px',
@@ -193,7 +193,7 @@ var athletics = (function( app, $ ) {
 					$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
 						'left': line_length + 'px',
 						'width': line_width + 'px',
-						'height': Math.abs(offset) + 'px',
+						'height': Math.abs(offset) + 'px'
 					});
 					
 					if (offset < 0) {
@@ -211,7 +211,7 @@ var athletics = (function( app, $ ) {
 						'top': offset + 'px'
 					});
 				
-				};
+				}
 				
 				
 				//set up basic styling for default view
@@ -232,19 +232,19 @@ var athletics = (function( app, $ ) {
 					'top': offset - body_padding + 'px',
 					'max-width':'480px',
 					'z-index':'2'
-				})
+				});
 								
 				$this.find('.i_s_body h3').css({
 					'font': 'normal 16px/20px Georgia, serif',
 					'margin': '5px 0 0'
-				})
+				});
 				
 				$this.find('.i_s_body h5').css({
 					'font': 'normal 11px/13px Verdana, arial, sans-serif',
 					'text-transform':'uppercase',
 					'color': '#999',
 					'margin': 0
-				})
+				});
 				
 				//make sure we're not showing the details of each point
 				$this.find('.i_s_detail').css({
@@ -264,7 +264,7 @@ var athletics = (function( app, $ ) {
 						'box-shadow': '0 0 5px #666',
 						'z-index':'3',
 						'cursor': 'pointer'
-					})
+					});
 					
 					// attach click events
 					
@@ -272,7 +272,7 @@ var athletics = (function( app, $ ) {
 						
 						_launch_datapoint_details( $this, pos_left, pos_top, body_padding, offset );
 						
-					})
+					});
 					
 				});
 				
@@ -287,13 +287,13 @@ var athletics = (function( app, $ ) {
 						'-webkit-box-shadow': 'none',
 						'box-shadow': 'none',
 						'z-index':'3'
-					})
+					});
 				
 				});
 				
 			});
 					
-		};
+		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
@@ -303,7 +303,7 @@ var athletics = (function( app, $ ) {
 				detail_window_html = '',
 				$detail_window = $obj.find('.i_s_detail_window');
 				
-			//setting up basic detail_window styling 
+			//setting up basic detail_window styling
 			$detail_window.css({
 				'z-index': 10,
 				'position' : 'absolute',
@@ -312,7 +312,7 @@ var athletics = (function( app, $ ) {
 				'-webkit-box-shadow': '0 0 5px #666',
 				'box-shadow': '0 0 5px #666',
 				'padding': body_padding + 'px'
-			})
+			});
 			
 			$detail_window.find('span.i_s_arrow').css({
 				'width': '20',
@@ -321,7 +321,7 @@ var athletics = (function( app, $ ) {
 				'left': '-20px',
 				'top': '2px',
 				'background': 'url("img/sprite_arrows.png") no-repeat 0 0'
-			})
+			});
 				
 			// is the detail window already open?
 			if ( !$detail_window.hasClass('window_open') ) {
@@ -342,8 +342,8 @@ var athletics = (function( app, $ ) {
 					'width': initial_width + 'px',
 					'height': initial_height + 'px',
 					'top' : pos_top + body_position.top + 'px',
-					'left' : pos_left + body_position.left + 'px',
-				})
+					'left' : pos_left + body_position.left + 'px'
+				});
 				
 				//style contents
 				_style_detail_window();
@@ -352,16 +352,20 @@ var athletics = (function( app, $ ) {
 				var content_height = $detail_window.find('.i_s_detail_contents').height();
 				
 				//animate window
-				$detail_window.stop().animate({
-					'width' : '480px'
-					,'height' : content_height + 'px'
-					}
-					,200
-					,function () {
-						$detail_window.addClass('window_open');
-						$detail_window.find('.i_s_close_btn').css({
-							'display': 'block'
-						})
+				$detail_window.stop()
+					.animate({
+						'width' : '480px',
+						'height' : content_height + 'px'
+					},
+					{
+						'duration' : 200,
+						'complete' : function () {
+
+							$detail_window.addClass('window_open');
+							$detail_window.find('.i_s_close_btn').css({
+								'display': 'block'
+							});
+						}
 					});
 					
 				// style close_btn
@@ -377,16 +381,19 @@ var athletics = (function( app, $ ) {
 					'-moz-border-radius': '50%',
 					'border-radius': '50%',
 					'cursor':'pointer'
-				})
+				});
 				
 				// attach click events to close_btn
 				$detail_window.find('.i_s_close_btn').unbind('click').bind('click', function(){
+
 					$detail_window.removeClass('window_open');
 					$detail_window.css({
 						'display': 'none'
-					})
-					$detail_window.find('.i_s_detail_contents').html("");
-				})
+					});
+
+					$detail_window.find('.i_s_detail_contents').html('');
+
+				});
 					
 			} else {
 				
@@ -395,7 +402,7 @@ var athletics = (function( app, $ ) {
 				//hide old contents
 				$detail_window.find('.i_s_detail_contents').css({
 					'opacity': 0
-				})
+				});
 				
 				//replace with new contents
 				$detail_window.find('.i_s_detail_contents').html(datapoint_content);
@@ -404,22 +411,27 @@ var athletics = (function( app, $ ) {
 				_style_detail_window();
 			
 				//move position and animate height
-				var new_body_position = $this.find('.i_s_body').position();
-				var new_content_height = $detail_window.find('.i_s_detail_contents').height();
+				var new_body_position = $this.find('.i_s_body').position(),
+					new_content_height = $detail_window.find('.i_s_detail_contents').height();
 				
-				$detail_window.stop().animate({
-					'top' : pos_top + new_body_position.top + 'px'
-					,'height' : new_content_height + 'px'
-					},{
-					'duration' : 300
+				$detail_window.stop()
+					.animate({
+						'top' : pos_top + new_body_position.top + 'px',
+						'height' : new_content_height + 'px'
+					},
+					{
+						'duration' : 300
 					});
 					
 				//reveal new contents
 
-				$detail_window.find('.i_s_detail_contents').animate({
-					'opacity' : 1
-				}, 300)
-				
+				$detail_window.find('.i_s_detail_contents')
+					.animate({
+						'opacity' : 1
+					},
+					{
+						'duration' : 300
+					});
 			}
 						
 			/*if ( $detail_window.length < 1 ) {
@@ -446,24 +458,23 @@ var athletics = (function( app, $ ) {
 			
 			$detail_window.css({
 				'padding': '10px'
-			})
+			});
 			
 			$detail_window.find('.i_s_detail_contents').css({
 				'width' : '480px',
-				'overflow': 'hidden',
-			})
+				'overflow': 'hidden'
+			});
 			
 			$detail_window.find('.i_s_detail').css({
 				'display': 'block',
 				'width' : '480px',
 				'overflow': 'hidden',
 				'font': 'normal 15px/19px Georgia, serif'
-			})
-			
+			});
 			
 			$detail_window.find('.i_s_detail a').css({
-				'color': '#0F2D5F',
-			})
+				'color': '#0F2D5F'
+			});
 			
 			$detail_window.find('h3').css({
 				'font': 'bold 18px/22px Georgia, serif',
@@ -474,26 +485,26 @@ var athletics = (function( app, $ ) {
 				'float': 'right',
 				'border': '3px solid #ededed',
 				'margin': '0 0 10px 10px'
-			})
+			});
 			
 			$detail_window.find('ul.i_s_related_links').css({
 				'list-style-type':'none',
 				'padding': '0',
 				'margin-top': '20px'
-			})
+			});
 			
 			$detail_window.find('ul.i_s_related_links li').css({
 				'font': 'bold 13px/15px Georgia, serif',
 				'margin': '10px 0'
-			})
+			});
 			
 			$detail_window.find('ul.i_s_related_links li a').css({
 				'text-decoration': 'none'
-			})
+			});
 			
 			$detail_window.find('ul.i_s_related_links li a:hover').css({
 				'text-decoration': 'underline'
-			})
+			});
 			
 			$detail_window.find('ul.i_s_tweets').css({
 				'display': 'block',
@@ -502,13 +513,13 @@ var athletics = (function( app, $ ) {
 				'list-style-type': 'none',
 				'padding': 0,
 				'font': 'normal 12px/14px arial, sans-serif'
-			})
+			});
 			
 			$detail_window.find('ul.i_s_tweets').css({
 				'display': 'block',
 				'width': '100%',
 				'background': '#ededed'
-			})
+			});
 			
 		}
 		
@@ -556,9 +567,9 @@ var athletics = (function( app, $ ) {
 			
 		}
 		
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		/*function _reveal_datapoint_details( $this ) {
+		
+		function _reveal_datapoint_details( $this ) {
 						
 			$this.css({
 				'width': '480px',
@@ -610,6 +621,7 @@ var athletics = (function( app, $ ) {
 			})
 			
 		};
+		*/
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		

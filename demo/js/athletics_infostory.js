@@ -119,28 +119,28 @@ var athletics = (function( app, $ ) {
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _init_data_points() {
-			
-			var line_width = 30;
-			
+						
 			//styling for datapoint set
 			$datapoints.css({
 				'position': 'absolute',
 				'top': 0,
 				'left': 0,
-				'z-index': 3 
+				'z-index': 3,
+				'width': '100%'
 			})
 			
 			$datapoints.find('div.i_s_datapoint').each(function(){
 				
-				//_reset_datapoint_styling();
-				
+				// setting variables for position and measurements
 				var $this = $(this),
 					point_html ='',
 					pos_left = $this.data('x'),
 					pos_top = $this.data('y'),
 					offset = $this.data('offset'),
-					line_width = 15,
-					point_diameter = 10;	
+					line_length = 15,
+					line_width = 1,
+					point_diameter = 10,
+					body_padding = 10;
 				
 				if (!$this.hasClass('.i_s_point_initialized')) {
 					
@@ -156,7 +156,7 @@ var athletics = (function( app, $ ) {
 					//append plotter to each data point
 					$this.append(point_html).addClass('.i_s_point_initialized');
 										
-					//style point & point plot lines
+					//style and position point plotter
 					$this.find('.i_s_point_plotter').css({
 						'position': 'absolute',
 						'left': 0,
@@ -179,8 +179,8 @@ var athletics = (function( app, $ ) {
 					})
 					
 					$this.find('.i_s_point_plotter .i_s_line').css({
-						'height': '1px',
-						'width': line_width + 'px',
+						'height': line_width + 'px',
+						'width': line_length + 'px',
 						'background': 'red',
 						'position': 'absolute',
 						'top': '0',
@@ -189,14 +189,14 @@ var athletics = (function( app, $ ) {
 					
 					
 					$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
-						'left': line_width + 'px',
-						'width':'1px',
+						'left': line_length + 'px',
+						'width': line_width + 'px',
 						'height': Math.abs(offset) + 'px',
 					});
 					
 					if (offset < 0) {
 						$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
-							'top': offset + 'px'
+							'top': offset + line_width + 'px'
 						});
 					} else {
 						$this.find('.i_s_point_plotter .i_s_line.i_s_center').css({
@@ -205,7 +205,7 @@ var athletics = (function( app, $ ) {
 					}
 
 					$this.find('.i_s_point_plotter .i_s_line.i_s_right').css({
-						'left': line_width + 'px',
+						'left': line_length + 'px',
 						'top': offset + 'px'
 					});
 				
@@ -218,15 +218,19 @@ var athletics = (function( app, $ ) {
 					'position': 'absolute',
 					'left': pos_left + 'px',
 					'top': pos_top + 'px',
+					'width': '100%',
+					'z-index':'1'
 				});
 				
 				$this.find('.i_s_body').css({
 					'position': 'absolute',
-					'left': 2*line_width + point_diameter + 'px',
-					'top': offset + 'px',
-					'width':'480px',
+					'padding' : body_padding + 'px',
+					'left': 2*line_length + point_diameter + 'px',
+					'top': offset - body_padding + 'px',
+					'max-width':'480px',
+					'z-index':'2'
 				})
-				
+								
 				$this.find('.i_s_body h3').css({
 					'font': 'normal 16px/20px Georgia, serif',
 					'margin': '5px 0 0'
@@ -239,42 +243,117 @@ var athletics = (function( app, $ ) {
 					'margin': 0
 				})
 				
-				//don't show the details of each point yet
+				//make sure we're not showing the details of each point
 				$this.find('.i_s_detail').css({
 					'display':'none'
 				});
 				
-				/*
-				//attach mouseenter
+				
+				// attach mouseenter
 				$this.unbind('mouseenter').bind('mouseenter', function(){
 					
-					//add background color and shadow
-					$this.css({
+					$this.find('.i_s_body').addClass('i_s_hovering');
+					
+					$this.find('.i_s_body.i_s_hovering').css({
 						'background': '#fff',
 						'-moz-box-shadow': '0 0 5px #666',
 						'-webkit-box-shadow': '0 0 5px #666',
 						'box-shadow': '0 0 5px #666',
+						'z-index':'3',
 						'cursor': 'pointer'
-					});
+					})
 					
-					//attach click events
+					// attach click events
+					
 					$this.unbind('click').bind('click', function(){
 						
-						_reveal_datapoint_details( $this );
+						_launch_datapoint_details( $this, pos_left, pos_top, body_padding );
 						
 					})
+					
 				});
 				
 				//attach mouseleave
 				$this.unbind('mouseleave').bind('mouseleave', function(){
 					
-					_reset_datapoint_styling();
+					$this.find('.i_s_body').removeClass('i_s_hovering');
+					
+					$this.find('.i_s_body').css({
+						'background': 'none',
+						'-moz-box-shadow': 'none',
+						'-webkit-box-shadow': 'none',
+						'box-shadow': 'none',
+						'z-index':'3'
+					})
 				
-				}); */
+				});
 				
 			});
 					
 		};
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _launch_datapoint_details( $this, pos_left, pos_top, body_padding ) {
+						
+			var datapoint_content = $this.find('.i_s_body').html(),
+				detail_window_html = '',
+				detail_window = $obj.find('.i_s_detail_window');
+			
+			detail_window_html += '<div class="i_s_detail_window">' +
+				'<span class="i_s_arrow"></span>' +
+				'<div class="i_s_detail_contents"></div>'
+			'</div>';
+			
+			// If detail window doesn't open
+			if (!$obj.hasClass('.i_s_detail_initialized')) {
+				
+				$obj.append(detail_window_html).addClass('.i_s_detail_initialized');
+				
+			}
+						
+			// add datapoint content to detail window
+			detail_window.find('.i_s_detail_contents').html(datapoint_content);
+			
+			// find initial heights & positions
+			var initial_height = $this.find('.i_s_body').height(),
+				initial_width = $this.find('.i_s_body').width(),
+				_i_s_body_position = $this.find('.i_s_body').position();
+				
+			// position detail window
+			detail_window.css({
+				'z-index': 10,
+				'width': initial_width + 'px',
+				'height': initial_height + 'px',
+				'position' : 'absolute',
+				'top' : pos_top + _i_s_body_position.top + 'px',
+				'left' : pos_left + _i_s_body_position.left + 'px',
+				'background' : "#fff",
+				'-moz-box-shadow': '0 0 5px #666',
+				'-webkit-box-shadow': '0 0 5px #666',
+				'box-shadow': '0 0 5px #666',
+				'padding': body_padding + 'px'
+			})
+			
+			detail_window.find('.i_s_detail').css({
+				'display': 'block',
+				'font': 'normal 15px/19px Georgia, serif'
+			})
+			
+			// find height of content
+			var content_height = detail_window.find('.i_s_detail').height();
+						
+			//animate detail window to size
+			detail_window.stop().animate({
+				'width' : '480px'
+				,'height' : content_height + 'px'
+				},{
+				'duration' : 300
+				});
+			
+			
+			
+		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		

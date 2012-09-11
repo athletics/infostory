@@ -81,7 +81,7 @@ var athletics = (function( app, $ ) {
 			$controls.css({
 				'position' : 'absolute',
 				'z-index' : 4,
-				'top' : 20,
+				'top' : 170,
 				'left' : 20,
 				'font-size' : '14px'
 			});
@@ -166,6 +166,7 @@ var athletics = (function( app, $ ) {
 					$this.find('.i_s_point_plotter span.i_s_point').css({
 						'width': point_diameter + 'px',
 						'height': point_diameter + 'px',
+						'border-radius': '50%',
 						'background': '#000',
 						'position': 'absolute',
 						'left': 0,
@@ -361,9 +362,9 @@ var athletics = (function( app, $ ) {
 					'background': 'url("img/sprite_close_btn.png") no-repeat 0 0',
 					'top': 0,
 					'right': 0,
-					'-webkit-border-radius': '28px',
-					'-moz-border-radius': '28px',
-					'border-radius': '28px',
+					'-webkit-border-radius': '50%',
+					'-moz-border-radius': '50%',
+					'border-radius': '50%',
 					'cursor':'pointer'
 				})
 				
@@ -615,7 +616,7 @@ var athletics = (function( app, $ ) {
 			$bgs.css({
 				'position' : 'absolute',
 				'z-index' : 1,
-				'top' : '70px',
+				'top' : '220px',
 				'left' : 0
 			});
 			

@@ -82,16 +82,17 @@ var athletics = (function( app, $ ) {
 				'position' : 'absolute',
 				'z-index' : 4,
 				'top' : 170,
-				'left' : 20,
+				'left' : 170,
 				'font-size' : '14px'
 			});
 			
 			// general styling on controls
 			$controls.find('div.i_s_option').css({
-				'color' : '#ffffff',
+				'color' : '#666',
 				'font-size' : '12px',
-				'font-family' : 'Arial',
-				'font-weight' : 'bold',
+				'font-family' : 'Verdana',
+				'font-weight' : 'normal',
+				'text-decoration': 'underline',
 				'cursor' : 'pointer'
 			});
 			
@@ -220,7 +221,8 @@ var athletics = (function( app, $ ) {
 					'left': pos_left + 'px',
 					'top': pos_top + 'px',
 					'width': '100%',
-					'z-index':'1'
+					'z-index':'1',
+					'cursor': 'pointer'
 				});
 				
 				$this.find('.i_s_body').css({
@@ -268,7 +270,7 @@ var athletics = (function( app, $ ) {
 					
 					$this.unbind('click').bind('click', function(){
 						
-						_launch_datapoint_details( $this, pos_left, pos_top, body_padding );
+						_launch_datapoint_details( $this, pos_left, pos_top, body_padding, offset );
 						
 					})
 					
@@ -295,7 +297,7 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _launch_datapoint_details( $this, pos_left, pos_top, body_padding ) {
+		function _launch_datapoint_details( $this, pos_left, pos_top, body_padding, offset ) {
 						
 			var datapoint_content = $this.find('.i_s_body').html(),
 				detail_window_html = '',
@@ -310,6 +312,15 @@ var athletics = (function( app, $ ) {
 				'-webkit-box-shadow': '0 0 5px #666',
 				'box-shadow': '0 0 5px #666',
 				'padding': body_padding + 'px'
+			})
+			
+			$detail_window.find('span.i_s_arrow').css({
+				'width': '20',
+				'height': '26px',
+				'position': 'absolute',
+				'left': '-20px',
+				'top': '2px',
+				'background': 'url("img/sprite_arrows.png") no-repeat 0 0'
 			})
 				
 			// is the detail window already open?
@@ -484,11 +495,20 @@ var athletics = (function( app, $ ) {
 				'text-decoration': 'underline'
 			})
 			
-			//TEMPORARILY hide tweets
 			$detail_window.find('ul.i_s_tweets').css({
-				'display': 'none'
+				'display': 'block',
+				'width': '100%',
+				'background': '#ededed',
+				'list-style-type': 'none',
+				'padding': 0,
+				'font': 'normal 12px/14px arial, sans-serif'
 			})
 			
+			$detail_window.find('ul.i_s_tweets').css({
+				'display': 'block',
+				'width': '100%',
+				'background': '#ededed'
+			})
 			
 		}
 		
@@ -665,7 +685,11 @@ var athletics = (function( app, $ ) {
 		
 		function _reset_bg_controls() {
 			$controls.find('div.i_s_option').css({
-				'background-color' : 'black'
+				'background-color' : '#fff',
+				'color': '#666',
+				'font-weight': 'normal',
+				'text-transform': 'none',
+				'text-decoration' : 'underline'
 			});
 		}
 		
@@ -678,7 +702,11 @@ var athletics = (function( app, $ ) {
 			var $target = $controls.find('div.i_s_option[data-id="'+ id +'"]');
 			
 			$target.css({
-				'background-color' : 'blue'
+				'background-color' : '#069eec',
+				'color': '#fff',
+				'font-weight': 'bold',
+				'text-transform': 'uppercase',
+				'text-decoration' : 'none'
 			});
 		}
 		

@@ -47,6 +47,41 @@ var athletics = (function( app, $ ) {
 				'background-color' : '#ffffff'
 			});
 			
+			$obj.find('.i_s_header').css({
+				'width': '100%',
+				'text-align': 'center',
+				'padding-bottom': '20px',
+				'border-bottom': '4px double #000'
+			});
+			
+			$obj.find('.i_s_header span.i_s_timeline_label').css({
+				'display':'inline-block',
+				'font': 'normal 11px/14px Verdana, sans-serif',
+				'text-transform': 'uppercase',
+				'letter-spacing' : '1px',
+				'color': '#fff',
+				'padding': '5px',
+				'background' : '#000',
+				'margin-bottom' : '10px'
+			});
+			
+			$obj.find('.i_s_header img').css({
+				'position': 'absolute',
+				'top': 0,
+				'right': 0
+			});
+			
+			$obj.find('.i_s_header h1').css({
+				'font': 'normal 32px/36px Georgia, serif',
+				'margin': '10px 0'
+			});
+			
+			$obj.find('.i_s_header h4').css({
+				'font': 'italic 16px/20px Georgia, serif',
+				'color':'#666',
+				'margin': '10px 0'
+			});
+			
 			$obj.show();
 			
 			_initialized = true;

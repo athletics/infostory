@@ -35,6 +35,7 @@ var athletics = (function( app, $ ) {
 			if ($obj.length != 1) return false;
 			
 			_init_controls();
+			_init_year_markers();
 			_init_data_points();
 			_init_bgs();
 			_init_border();
@@ -157,18 +158,40 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _init_data_points() {
+		function _init_year_markers() {
 			
-			//styling for year markers
-			$obj.find('span.i_s_year').css({
-				'display':'inline-block',
-				'font': 'normal 11px/14px Verdana, sans-serif',
-				'text-transform': 'uppercase',
-				'letter-spacing' : '1px',
-				'color': '#fff',
-				'padding': '5px',
-				'background' : 'red',
-			})
+			console.log ('init');
+			
+			$year_marker = $datapoints.find('span.i_s_year');
+				
+			$year_marker.each(function(){
+				
+				//setting up variables for position
+				var $this = $(this),
+					pos_left = $this.data('x'),
+					pos_top = $this.data('y');
+				
+				$this.css({
+					'display':'inline-block',
+					'font': 'normal 11px/14px Verdana, sans-serif',
+					'text-align': 'center',
+					'text-transform': 'uppercase',
+					'letter-spacing' : '1px',
+					'color': '#fff',
+					'padding': '5px',
+					'width': '40px',
+					'background' : 'black',
+					'position' : 'absolute',
+					'top' : pos_top + 'px',
+					'left' : pos_left + 'px'
+				});
+				
+			});
+		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _init_data_points() {
 						
 			//styling for datapoint set
 			$datapoints.css({

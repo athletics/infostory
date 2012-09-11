@@ -166,7 +166,7 @@ var athletics = (function( app, $ ) {
 					$this.find('.i_s_point_plotter span.i_s_point').css({
 						'width': point_diameter + 'px',
 						'height': point_diameter + 'px',
-						'background': 'red',
+						'background': '#000',
 						'position': 'absolute',
 						'left': 0,
 						'top': 0,
@@ -181,7 +181,7 @@ var athletics = (function( app, $ ) {
 					$this.find('.i_s_point_plotter .i_s_line').css({
 						'height': line_width + 'px',
 						'width': line_length + 'px',
-						'background': 'red',
+						'background': '#000',
 						'position': 'absolute',
 						'top': '0',
 						'left': '0'
@@ -298,59 +298,167 @@ var athletics = (function( app, $ ) {
 						
 			var datapoint_content = $this.find('.i_s_body').html(),
 				detail_window_html = '',
-				detail_window = $obj.find('.i_s_detail_window');
-			
-			detail_window_html += '<div class="i_s_detail_window">' +
-				'<span class="i_s_arrow"></span>' +
-				'<div class="i_s_detail_contents"></div>'
-			'</div>';
-			
-			// If detail window doesn't open
-			if (!$obj.hasClass('.i_s_detail_initialized')) {
+				$detail_window = $obj.find('.i_s_detail_window');
 				
-				$obj.append(detail_window_html).addClass('.i_s_detail_initialized');
-				
-			}
-						
-			// add datapoint content to detail window
-			detail_window.find('.i_s_detail_contents').html(datapoint_content);
-			
-			// find initial heights & positions
-			var initial_height = $this.find('.i_s_body').height(),
-				initial_width = $this.find('.i_s_body').width(),
-				_i_s_body_position = $this.find('.i_s_body').position();
-				
-			// position detail window
-			detail_window.css({
+			//setting up basic detail_window styling 
+			$detail_window.css({
 				'z-index': 10,
-				'width': initial_width + 'px',
-				'height': initial_height + 'px',
 				'position' : 'absolute',
-				'top' : pos_top + _i_s_body_position.top + 'px',
-				'left' : pos_left + _i_s_body_position.left + 'px',
 				'background' : "#fff",
 				'-moz-box-shadow': '0 0 5px #666',
 				'-webkit-box-shadow': '0 0 5px #666',
 				'box-shadow': '0 0 5px #666',
 				'padding': body_padding + 'px'
 			})
+				
+			// is the detail window already open?
+			if ( !$detail_window.hasClass('window_open') ) {
+				
+				// no, populate and position it
+				
+				// add datapoint content
+				$detail_window.find('.i_s_detail_contents').html(datapoint_content);
+
+				// find initial heights & positions
+				var initial_height = $this.find('.i_s_body').height(),
+					initial_width = $this.find('.i_s_body').width(),
+					body_position = $this.find('.i_s_body').position();
+
+				// position detail window
+				$detail_window.css({
+					'width': initial_width + 'px',
+					'height': initial_height + 'px',
+					'top' : pos_top + body_position.top + 'px',
+					'left' : pos_left + body_position.left + 'px',
+				})
+				
+				//style contents
+				_style_detail_window();
+
+				// find height of content
+				var content_height = $detail_window.find('.i_s_detail_contents').height();
+				
+				//animate window
+				$detail_window.stop().animate({
+					'width' : '480px'
+					,'height' : content_height + 'px'
+					}
+					,300
+					,function () {
+						$detail_window.addClass('window_open');
+					});
+				
+			} else {
+				
+				//window is already open, we need to switch the content and move the position
+				
+				//hide old contents
+				$detail_window.find('.i_s_detail_contents').css({
+					'opacity': 0
+				})
+				
+				//replace with new contents
+				$detail_window.find('.i_s_detail_contents').html(datapoint_content);
+				
+				//style contents
+				_style_detail_window();
 			
-			detail_window.find('.i_s_detail').css({
+				//move position and animate height
+				var new_body_position = $this.find('.i_s_body').position();
+				var new_content_height = $detail_window.find('.i_s_detail_contents').height();
+				
+				$detail_window.stop().animate({
+					'top' : pos_top + new_body_position.top + 'px'
+					,'height' : new_content_height + 'px'
+					},{
+					'duration' : 300
+					});
+					
+				//reveal new contents
+
+				$detail_window.find('.i_s_detail_contents').animate({
+					'opacity' : 1
+				}, 300)
+				
+			}
+						
+			/*if ( $detail_window.length < 1 ) {
+				// no, let's make it
+				
+				detail_window_html += '<div class="i_s_detail_window">' +
+					'<span class="i_s_arrow"></span>' +
+					'<div class="i_s_detail_contents"></div>'
+				'</div>';
+				
+				$obj.append(detail_window_html);
+				
+				$detail_window = $obj.find('.i_s_detail_window');
+			}*/
+			
+			
+		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _style_detail_window() {
+			
+			var $detail_window = $obj.find('.i_s_detail_window');
+			
+			$detail_window.css({
+				'padding': '10px'
+			})
+			
+			$detail_window.find('.i_s_detail_contents').css({
+				'width' : '480px',
+				'overflow': 'hidden',
+			})
+			
+			$detail_window.find('.i_s_detail').css({
 				'display': 'block',
+				'width' : '480px',
+				'overflow': 'hidden',
 				'font': 'normal 15px/19px Georgia, serif'
 			})
 			
-			// find height of content
-			var content_height = detail_window.find('.i_s_detail').height();
-						
-			//animate detail window to size
-			detail_window.stop().animate({
-				'width' : '480px'
-				,'height' : content_height + 'px'
-				},{
-				'duration' : 300
-				});
 			
+			$detail_window.find('.i_s_detail a').css({
+				'color': '#0F2D5F',
+			})
+			
+			$detail_window.find('h3').css({
+				'font': 'bold 18px/22px Georgia, serif',
+				'margin': '10px 0'
+			});
+			
+			$detail_window.find('img').css({
+				'float': 'right',
+				'border': '3px solid #ededed',
+				'margin': '0 0 10px 10px'
+			})
+			
+			$detail_window.find('ul.i_s_related_links').css({
+				'list-style-type':'none',
+				'padding': '0',
+				'margin-top': '20px'
+			})
+			
+			$detail_window.find('ul.i_s_related_links li').css({
+				'font': 'bold 13px/15px Georgia, serif',
+				'margin': '10px 0'
+			})
+			
+			$detail_window.find('ul.i_s_related_links li a').css({
+				'text-decoration': 'none'
+			})
+			
+			$detail_window.find('ul.i_s_related_links li a:hover').css({
+				'text-decoration': 'underline'
+			})
+			
+			//TEMPORARILY hide tweets
+			$detail_window.find('ul.i_s_tweets').css({
+				'display': 'none'
+			})
 			
 			
 		}

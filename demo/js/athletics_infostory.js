@@ -158,6 +158,17 @@ var athletics = (function( app, $ ) {
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _init_data_points() {
+			
+			//styling for year markers
+			$obj.find('span.i_s_year').css({
+				'display':'inline-block',
+				'font': 'normal 11px/14px Verdana, sans-serif',
+				'text-transform': 'uppercase',
+				'letter-spacing' : '1px',
+				'color': '#fff',
+				'padding': '5px',
+				'background' : 'red',
+			})
 						
 			//styling for datapoint set
 			$datapoints.css({

@@ -326,6 +326,7 @@ var athletics = (function( app, $ ) {
 
 				// position detail window
 				$detail_window.css({
+					'display': 'block',
 					'width': initial_width + 'px',
 					'height': initial_height + 'px',
 					'top' : pos_top + body_position.top + 'px',
@@ -343,11 +344,38 @@ var athletics = (function( app, $ ) {
 					'width' : '480px'
 					,'height' : content_height + 'px'
 					}
-					,300
+					,200
 					,function () {
 						$detail_window.addClass('window_open');
+						$detail_window.find('.i_s_close_btn').css({
+							'display': 'block'
+						})
 					});
+					
+				// style close_btn
+				$detail_window.find('.i_s_close_btn').css({
+					'display': 'none',
+					'position': 'absolute',
+					'width': '28px',
+					'height': '28px',
+					'background': 'url("img/sprite_close_btn.png") no-repeat 0 0',
+					'top': 0,
+					'right': 0,
+					'-webkit-border-radius': '28px',
+					'-moz-border-radius': '28px',
+					'border-radius': '28px',
+					'cursor':'pointer'
+				})
 				
+				// attach click events to close_btn
+				$detail_window.find('.i_s_close_btn').unbind('click').bind('click', function(){
+					$detail_window.removeClass('window_open');
+					$detail_window.css({
+						'display': 'none'
+					})
+					$detail_window.find('.i_s_detail_contents').html("");
+				})
+					
 			} else {
 				
 				//window is already open, we need to switch the content and move the position
@@ -662,7 +690,7 @@ var athletics = (function( app, $ ) {
 			$credit.css({
 				'width' : $obj.data('width'),
 				'height' : 30,
-				'background-color' : '#cccccc',
+				'background-color' : '#fff',
 				'position' : 'absolute',
 				'left' : 0,
 				'bottom' : 0,
@@ -677,6 +705,10 @@ var athletics = (function( app, $ ) {
 				'display' : 'block',
 				'padding-top' : '5px',
 				'padding-right' : '10px'
+			});
+			
+			$credit.find('span.i_s_copy a').css({
+				'color':'#666'
 			});
 		}
 		

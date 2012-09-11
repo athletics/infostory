@@ -344,8 +344,6 @@ var athletics = (function( app, $ ) {
 			});
 			
 			$this.find('img').css({
-				'width': '260px',
-				'height': '180px',
 				'float': 'right',
 				'border': '3px solid #ededed',
 				'margin': '0 0 10px 10px'

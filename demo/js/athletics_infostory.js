@@ -880,7 +880,9 @@ var athletics = (function( app, $ ) {
 				
 				var $this = $(this);
 				
+				avatars_html += '<a href="'+ $this.data('tweet-url') +'" target="_blank">';
 				avatars_html += '<img class="i_s_avatar" src="'+ $this.data('avatar-src') +'" alt="">';
+				avatars_html += '</a>';
 				
 			});
 		
@@ -991,8 +993,8 @@ var athletics = (function( app, $ ) {
 						
 			//set up selected tweet
 			tweet_detail_html += '<p class="i_s_tweet_name">';
-			tweet_detail_html +=	'<span class="i_s_tweet_name">' + tweet_name + '</span>';
-			tweet_detail_html +=	'<span class="i_s_twitter_handle"> @' + twitter_handle + '</span>';
+			tweet_detail_html +=	'<span class="i_s_tweet_name"><a href="http://twitter.com/' + twitter_handle + '" target="_blank">' + tweet_name + '</a></span>';
+			tweet_detail_html +=	'<span class="i_s_twitter_handle"><a href="http://twitter.com/' + twitter_handle + '" target="_blank"> @' + twitter_handle + '</a></span>';
 			tweet_detail_html += '</p>';
 			tweet_detail_html += tweet_text;
 			tweet_detail_html += '<p class="i_s_tweet_time">' + datetime + '</p>';
@@ -1011,6 +1013,11 @@ var athletics = (function( app, $ ) {
 				'font-weight' : 'bold'
 			});
 			
+			$tweet_detail.find('p.i_s_tweet_name a').css({
+				'text-decoration': 'none',
+				'color': '#000'
+			});
+			
 			$tweet_detail.find('span.i_s_content').css({
 				'margin': '5px 0',
 				'display': 'block'
@@ -1024,6 +1031,10 @@ var athletics = (function( app, $ ) {
 				'font-size': '11px',
 				'color': '#999',
 				'font-weight': 'normal'
+			});
+			
+			$tweet_detail.find('span.i_s_twitter_handle a').css({
+				'color': '#999'
 			});
 			
 			$tweet_detail.find('p.i_s_tweet_time').css({

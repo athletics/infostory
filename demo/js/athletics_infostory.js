@@ -198,8 +198,8 @@ var athletics = (function( app, $ ) {
 					'text-transform': 'uppercase',
 					'letter-spacing' : '1px',
 					'color': '#fff',
-					'padding': '5px',
-					'width': '40px',
+					'padding': '3px 4px',
+					'width': '38px',
 					'background' : 'black',
 					'position' : 'absolute',
 					'top' : pos_top + 'px',
@@ -381,6 +381,13 @@ var athletics = (function( app, $ ) {
 						$plotter.find('.i_s_line, .i_s_point').css({
 							'background': '#000000'
 						});
+
+						$plotter.find('.i_s_point').css({
+							'width' : '10px',
+							'height' : '10px',
+							'top' : '0',
+							'left' : '0'
+						});
 					}
 					
 				});
@@ -392,6 +399,13 @@ var athletics = (function( app, $ ) {
 
 					$plotter.find('.i_s_line, .i_s_point').css({
 						'background': _cur_color_scheme
+					});
+
+					$plotter.find('.i_s_point').css({
+						'width' : '16px',
+						'height' : '16px',
+						'top' : '-4px',
+						'left' : '-4px'
 					});
 
 				});

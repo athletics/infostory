@@ -141,6 +141,17 @@ var athletics = (function( app, $ ) {
 				'display' : 'block',
 			});
 			
+			$controls.find('span.i_s_downarrow').css({
+				'display': 'none',
+				'position' : 'absolute',
+				'bottom' : '-5px',
+				'left': '50%',
+				'margin-left': '-6px',
+				'background' : 'url("img/sprite_infostory.png") no-repeat -70px 0',
+				'width' : '12px',
+				'height' : '5px'
+			})
+			
 			// position controls
 			$controls.find('div.i_s_option').css({
 				'float' : 'left',
@@ -794,6 +805,10 @@ var athletics = (function( app, $ ) {
 				'text-transform': 'none',
 				'text-decoration' : 'underline'
 			});
+			
+			$controls.find('span.i_s_downarrow').css({
+				'display': 'none'
+			});
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -808,16 +823,15 @@ var athletics = (function( app, $ ) {
 				'background-color' : '#069eec',
 				'color': '#fff',
 				'font-weight': 'bold',
+				'font-size': '10px',
 				'text-transform': 'uppercase',
-				'text-decoration' : 'none'
+				'text-decoration' : 'none',
+				'position': 'relative'
 			});
 			
 			$target.find('span.i_s_downarrow').css({
 				'display': 'block',
-				'background' : 'red',
-				'width' : 5,
-				'height' : 5
-			})
+			});
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -449,6 +449,9 @@ var athletics = (function( app, $ ) {
 			// determine top
 			obj.top = pos_top + new_body_position.top;
 
+			// determine arrow top
+			obj.arrow_top = 3;
+
 			// determine destination top
 
 			obj.dest_top = obj.top;
@@ -457,6 +460,7 @@ var athletics = (function( app, $ ) {
 
 			if ( top_offset < 80 ) {
 				obj.dest_top = obj.top + top_offset - 80;
+				obj.arrow_top = (top_offset - 80 - 3) * -1;
 			}
 
 			return obj;
@@ -518,7 +522,8 @@ var athletics = (function( app, $ ) {
 			properties = _get_expanded_datapoint_properties( $this, $detail_window );
 
 			// animate window
-			$detail_window.stop()
+			$detail_window
+				.stop()
 				.animate({
 					'width' : '480px',
 					'height' : properties.height + 'px',
@@ -535,6 +540,13 @@ var athletics = (function( app, $ ) {
 					}
 				});
 
+			$detail_window.find('span.i_s_arrow')
+				.stop()
+				.animate({
+					'top' : properties.arrow_top + 'px'
+				},{
+					'duration' : 150
+				});
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -999,6 +999,10 @@ var athletics = (function( app, $ ) {
 			tweet_detail_html += tweet_text;
 			tweet_detail_html += '<p class="i_s_tweet_time">' + datetime + '</p>';
 			
+			var new_date = new Date(datetime);
+			
+			console.log( new_date );
+			
 			// add target tweet
 			$detail_window.find('.i_s_tweet_detail').html(tweet_detail_html);
 			

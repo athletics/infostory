@@ -946,7 +946,7 @@ var athletics = (function( app, $ ) {
 				'background': '#ededed',
 				'list-style-type': 'none',
 				'padding': '10px',
-				'font': 'normal 13px/16px arial, sans-serif',
+				'font': 'normal 12px/16px verdana, sans-serif',
 				'color': '#000'
 			});
 			
@@ -1052,7 +1052,7 @@ var athletics = (function( app, $ ) {
 			
 			//style tweet
 			$tweet_detail.find('p.i_s_tweet_name').css({
-				'font-size': '13px',
+				'font-size': '12px',
 				'color': '#000',
 				'margin': 0,
 				'font-weight' : 'bold'
@@ -1073,7 +1073,7 @@ var athletics = (function( app, $ ) {
 			});
 			
 			$tweet_detail.find('span.i_s_twitter_handle').css({
-				'font-size': '11px',
+				'font-size': '10px',
 				'color': '#999',
 				'font-weight': 'normal'
 			});
@@ -1083,7 +1083,7 @@ var athletics = (function( app, $ ) {
 			});
 			
 			$tweet_detail.find('p.i_s_tweet_time').css({
-				'font-size': '11px',
+				'font-size': '10px',
 				'color': '#999',
 				'margin': 0
 			});

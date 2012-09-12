@@ -24,7 +24,8 @@ var athletics = (function( app, $ ) {
 			$labelpoints = null,
 			_cur_color_scheme = null,
 			_datapoint_body_padding = 10,
-			_img_sprite = 'img/sprite_infostory.png';
+			_img_path = 'http://clients.athleticsnyc.com/forbes/infostory/',
+			_img_sprite = _img_path + 'img/sprite_infostory.png';
 			
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
@@ -481,6 +482,15 @@ var athletics = (function( app, $ ) {
 
 			// add datapoint content
 			$detail_window.find('.i_s_detail_contents').html( datapoint_content );
+
+			// swap img src
+			$detail_window.find('img').each(function(){
+				var $img = $(this);
+
+				if ($img.attr('src').length < 1 && $img.data('src').length > 1) {
+					$img.attr('src', _img_path + $img.data('src'));
+				}
+			});
 			
 			//init tweets
 			_init_tweets( $detail_window );
@@ -825,12 +835,12 @@ var athletics = (function( app, $ ) {
 				float: 'right',
 				'margin-right': '10px',
 				'cursor': 'pointer'
-			})
+			});
 			
 			$detail_window.find('.i_s_timeline_nav .i_s_next').css({
 				float: 'right',
 				'cursor': 'pointer'
-			})
+			});
 			
 			$detail_window.find('.i_s_timeline_nav span.i_s_nav_arrow').css({
 				'background': 'url("'+ _img_sprite +'") no-repeat -30px 0',
@@ -838,13 +848,12 @@ var athletics = (function( app, $ ) {
 				'height':'12px',
 				'display': 'inline-block',
 				'margin-top': '3px'
-			})
+			});
 			
 			$detail_window.find('.i_s_timeline_nav .i_s_next span.i_s_nav_arrow').css({
 				'background-position': '-50px 0'
-			})
+			});
 			
-
 			// style close_btn
 			$detail_window.find('.i_s_close_btn').css({
 				'display': 'none',
@@ -1069,7 +1078,7 @@ var athletics = (function( app, $ ) {
 				
 				if (!$this.hasClass('i_s_bg_initialized')) {
 					
-					bg_html += '<img src="'+ $this.data('img-src') +'" alt="">';
+					bg_html += '<img src="' + _img_path + $this.data('img-src') +'" alt="">';
 					
 					$this
 						.html( bg_html )

@@ -29,7 +29,7 @@ var athletics = (function( app, $ ) {
 		
 		function _init() {
 
-			$obj = $('div.athletics.infostory[data-infostory-name="demo"]');
+			$obj = $('div.athletics.infostory[data-infostory-name="forbes_timeline"]');
 			
 			$datapoints = $obj.find('div.i_s_datapoints');
 			
@@ -394,7 +394,57 @@ var athletics = (function( app, $ ) {
 				});
 				
 			});
+
+			// attach keyboard navigation
+
+			// keyboard arrows
+				$(document).keydown(function(e){
+					
+					if (e.keyCode == 37) { // left arrow
+						_goto_prev_datapoint();
+						return false;
+
+					} else if (e.keyCode == 39) { // right arrow
+						_goto_next_datapoint();
+						return false;
+
+					} else if (e.keyCode == 27) { // escape key
+						_close_datapoint();
+					}
+				});
 			
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _goto_next_datapoint() {
+
+			var $cur = $datapoints.find('div.i_s_datapoint.i_s_active');
+
+			if ($cur.length < 1) return false;
+
+			var $next = $cur.next();
+
+			if ($next.length < 1) return false;
+
+			$next.trigger('click');
+
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _goto_prev_datapoint() {
+
+			var $cur = $datapoints.find('div.i_s_datapoint.i_s_active');
+
+			if ($cur.length < 1) return false;
+
+			var $prev = $cur.prev();
+
+			if ($prev.length < 1) return false;
+
+			$prev.trigger('click');
+
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -503,6 +553,8 @@ var athletics = (function( app, $ ) {
 
 			var properties = _get_expanded_datapoint_properties( $this, $detail_window );
 
+			$detail_window.stop();
+
 			//hide old contents
 			$detail_window.find('.i_s_detail_contents').css({
 				'opacity': 0
@@ -558,6 +610,8 @@ var athletics = (function( app, $ ) {
 			var initial_height = $this.find('.i_s_body').height(),
 				initial_width = $this.find('.i_s_body').width(),
 				properties = _get_expanded_datapoint_properties( $this, $detail_window );
+
+			$detail_window.stop();
 
 			// position detail window
 			$detail_window.css({
@@ -634,7 +688,7 @@ var athletics = (function( app, $ ) {
 			}
 			
 			// animate scroll
-			$('html,body').animate(
+			$('html,body').stop().animate(
 				{
 					'scrollTop' : new_scrolltop
 				},

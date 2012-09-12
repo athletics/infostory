@@ -476,6 +476,9 @@ var athletics = (function( app, $ ) {
 				pos_top = $this.data('y'),
 				offset = $this.data('offset');
 
+			// add another wrapper around body content
+			datapoint_content = '<div class="i_s_content_wrapper">' + datapoint_content + '</div>';
+
 			// add datapoint content
 			$detail_window.find('.i_s_detail_contents').html( datapoint_content );
 			
@@ -649,7 +652,7 @@ var athletics = (function( app, $ ) {
 			$detail_window
 				.stop()
 				.animate({
-					'width' : '480px',
+					'width' : '500px',
 					'height' : properties.height + 'px',
 					'top' : properties.dest_top
 				},
@@ -732,7 +735,10 @@ var athletics = (function( app, $ ) {
 				'background' : "#fff",
 				'-moz-box-shadow': '0 0 5px #666',
 				'-webkit-box-shadow': '0 0 5px #666',
-				'box-shadow': '0 0 5px #666',
+				'box-shadow': '0 0 5px #666'
+			});
+
+			$detail_window.find('.i_s_content_wrapper').css({
 				'padding' : _datapoint_body_padding + 'px'
 			});
 			
@@ -746,7 +752,7 @@ var athletics = (function( app, $ ) {
 			});
 			
 			$detail_window.find('.i_s_detail_contents').css({
-				'width' : '480px',
+				'width' : '500px',
 				'overflow': 'hidden'
 			});
 			
@@ -825,7 +831,7 @@ var athletics = (function( app, $ ) {
 			// no, don't continue
 			if ( $detail_window.find('ul.i_s_tweets').length < 1 ) return false;
 			
-			// yes, create structure for tweets			
+			// yes, create structure for tweets
 			var tweet_html = '',
 				avatars_html = '';
 								
@@ -840,12 +846,12 @@ var athletics = (function( app, $ ) {
 		
 			//create basic shell for tweets
 			tweet_html += '<div class="i_s_tweet_previews">';
-			tweet_html += 	'<h5>From around the web:</h5>';
-			tweet_html += 	'<div class="i_s_avatars">'
+			tweet_html +=	'<h5>From around the web</h5>';
+			tweet_html +=	'<div class="i_s_avatars">';
 			tweet_html +=		avatars_html;
-			tweet_html +=		'<div class="clear"></div>'
-			tweet_html += 	'</div>';
-			tweet_html += 	'<div class="i_s_tweet_detail"></div>';
+			tweet_html +=		'<div class="clear"></div>';
+			tweet_html +=	'</div>';
+			tweet_html +=	'<div class="i_s_tweet_detail"></div>';
 			tweet_html += '</div>';
 						
 			// add this html to the detail window
@@ -854,10 +860,9 @@ var athletics = (function( app, $ ) {
 			//style tweet
 			$detail_window.find('.i_s_tweet_previews').css({
 				'display': 'block',
-				'width': '100%',
 				'background': '#ededed',
 				'list-style-type': 'none',
-				'padding': '10px 0',
+				'padding': '10px',
 				'font': 'normal 13px/16px arial, sans-serif',
 				'color': '#000'
 			});
@@ -926,17 +931,17 @@ var athletics = (function( app, $ ) {
 		function _change_tweet( $detail_window, src ){
 						
 			//reset styling
-			 _reset_tweet( $detail_window );
+			_reset_tweet( $detail_window );
 			
 			//change tweet
 			
 			//if desired tweet already visible, stop.
 			
-			// else 
+			// else
 			
 			//get variables
 			var $target_tweet = $detail_window.find('ul.i_s_tweets li[data-avatar-src="'+ src +'"]'),
-				$tweet_detail = $detail_window.find('.i_s_tweet_detail')
+				$tweet_detail = $detail_window.find('.i_s_tweet_detail'),
 				tweet_text = $target_tweet.html(),
 				tweet_name = $target_tweet.data('tweet-name'),
 				twitter_handle = $target_tweet.data('tweet-username'),
@@ -946,13 +951,13 @@ var athletics = (function( app, $ ) {
 						
 			//set up selected tweet
 			tweet_detail_html += '<p class="i_s_tweet_name">';
-			tweet_detail_html += 	'<span class="i_s_tweet_name">' + tweet_name + '</span>';
-			tweet_detail_html += 	'<span class="i_s_twitter_handle"> @' + twitter_handle + '</span>';
+			tweet_detail_html +=	'<span class="i_s_tweet_name">' + tweet_name + '</span>';
+			tweet_detail_html +=	'<span class="i_s_twitter_handle"> @' + twitter_handle + '</span>';
 			tweet_detail_html += '</p>';
 			tweet_detail_html += tweet_text;
 			tweet_detail_html += '<p class="i_s_tweet_time">' + datetime + '</p>';
 			
-			// add target tweet 
+			// add target tweet
 			$detail_window.find('.i_s_tweet_detail').html(tweet_detail_html);
 			
 			//add active class to avatar shown

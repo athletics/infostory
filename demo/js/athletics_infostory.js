@@ -21,6 +21,7 @@ var athletics = (function( app, $ ) {
 			$border = null,
 			$credit = null,
 			$datapoints = null,
+			_cur_color_scheme = null,
 			_datapoint_body_padding = 10,
 			_img_sprite = 'img/sprite_infostory.png';
 			
@@ -171,7 +172,7 @@ var athletics = (function( app, $ ) {
 					$this.data('id')
 				);
 			});
-			
+	
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -340,6 +341,8 @@ var athletics = (function( app, $ ) {
 				
 				// attach mouseenter
 				$this.off('mouseenter').on('mouseenter', function(){
+
+					if ($this.hasClass('i_s_active')) return false;
 					
 					$this.find('.i_s_body').addClass('i_s_hovering');
 					
@@ -351,11 +354,11 @@ var athletics = (function( app, $ ) {
 						'z-index':'3',
 						'cursor': 'pointer'
 					});
-					
-					// attach click events
-					
-					$this.off('click').on('click', _launch_datapoint_details );
-					
+
+					$plotter.find('.i_s_line, .i_s_point').css({
+						'background': _cur_color_scheme
+					});
+
 				});
 				
 				//attach mouseleave
@@ -370,13 +373,20 @@ var athletics = (function( app, $ ) {
 						'box-shadow': 'none',
 						'z-index':'3'
 					});
+
+					$plotter.find('.i_s_line, .i_s_point').css({
+						'background': '#000000'
+					});
 				
 				});
+
+				// attach click event
+				$this.off('click').on('click', _launch_datapoint_details );
 				
 			});
-					
+			
 		}
-		
+
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _launch_datapoint_details() {
@@ -396,15 +406,13 @@ var athletics = (function( app, $ ) {
 			_style_detail_window();
 
 			// attach click events to close_btn
-			$detail_window.find('.i_s_close_btn').off('click').on('click', function(){
+			$detail_window.find('.i_s_close_btn').off('click').on('click', _close_datapoint );
 
-				$detail_window
-					.removeClass('window_open')
-					.hide();
+			// mark all other datapoints as inactive
+			$datapoints.find('div.i_s_datapoint').removeClass('i_s_active');
 
-				$detail_window.find('.i_s_detail_contents').html('');
-
-			});
+			// mark this datapoint as being active
+			$this.addClass('i_s_active');
 
 			if ( !$detail_window.hasClass('window_open') ) {
 				_reveal_datapoint( $this, $detail_window );
@@ -412,6 +420,22 @@ var athletics = (function( app, $ ) {
 				_change_datapoint( $this, $detail_window );
 			}
 
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _close_datapoint() {
+
+			var $detail_window = $obj.find('.i_s_detail_window');
+
+			$detail_window
+				.removeClass('window_open')
+				.hide();
+
+			$detail_window.find('.i_s_detail_contents').html('');
+
+			// mark all other datapoints as inactive
+			$datapoints.find('div.i_s_datapoint').removeClass('i_s_active');
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -747,6 +771,9 @@ var athletics = (function( app, $ ) {
 				});
 			
 			var $target = $bgs.find('span.i_s_bg[data-id="'+ id +'"]');
+
+			// set color scheme
+			_cur_color_scheme = $target.data('color-scheme');
 			
 			$target
 				.show()

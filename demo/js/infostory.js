@@ -483,6 +483,12 @@ var athletics = (function( app, $ ) {
 					$img.attr('src', _img_path + $img.data('src'));
 				}
 			});
+
+			// make sure all links are target blank
+			$detail_window.find('a').each(function(){
+				var $link = $(this);
+				$link.attr('target','_blank');
+			});
 			
 			//init tweets
 			_init_tweets( $detail_window );

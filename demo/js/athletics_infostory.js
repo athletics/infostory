@@ -490,6 +490,10 @@ var athletics = (function( app, $ ) {
 
 			// attach click events to close_btn
 			$detail_window.find('.i_s_close_btn').off('click').on('click', _close_datapoint );
+			
+			// attach click events to prev_next_buttons
+			$detail_window.find('.i_s_timeline_nav .i_s_next').off('click').on('click', _goto_next_datapoint );
+			$detail_window.find('.i_s_timeline_nav .i_s_prev').off('click').on('click', _goto_prev_datapoint );
 
 			// mark all other datapoints as inactive
 			$datapoints.find('div.i_s_datapoint').removeClass('i_s_active');
@@ -805,17 +809,39 @@ var athletics = (function( app, $ ) {
 				'clear': 'both'
 			});
 			
+			// style prev/next nav
 			$detail_window.find('.i_s_timeline_nav').css({
 				'font': 'normal 11px/14px Verdana, serif',
+				'text-transform': 'uppercase',
+				'color': '#999',
 				'float': 'right',
 				'margin-right' : '30px',
-				'position' : 'relative'
+				'position' : 'absolute',
+				'top': '7px',
+				'right': '20px'
 			});
 			
+			$detail_window.find('.i_s_timeline_nav .i_s_prev').css({
+				float: 'right',
+				'margin-right': '10px',
+				'cursor': 'pointer'
+			})
+			
+			$detail_window.find('.i_s_timeline_nav .i_s_next').css({
+				float: 'right',
+				'cursor': 'pointer'
+			})
+			
 			$detail_window.find('.i_s_timeline_nav span.i_s_nav_arrow').css({
-				'background': 'url("'+ _img_sprite +'") no-repeat -20px 0',
-				'width':'8px',
-				'height':'12px'
+				'background': 'url("'+ _img_sprite +'") no-repeat -30px 0',
+				'width':'9px',
+				'height':'12px',
+				'display': 'inline-block',
+				'margin-top': '3px'
+			})
+			
+			$detail_window.find('.i_s_timeline_nav .i_s_next span.i_s_nav_arrow').css({
+				'background-position': '-50px 0'
 			})
 			
 

@@ -46,6 +46,7 @@ var athletics = (function( app, $ ) {
 				'position' : 'relative',
 				'width' : $obj.data('width'),
 				'height' : $obj.data('height'),
+				'overflow' : 'hidden',
 				'font-size' : 0,
 				'background-color' : '#ffffff'
 			});
@@ -424,7 +425,9 @@ var athletics = (function( app, $ ) {
 				pos_top = $this.data('y'),
 				pos_left = $this.data('x'),
 				new_body_position = $this.find('.i_s_body').position(),
-				new_content_height = $detail_window.find('.i_s_detail_contents').height();
+				new_content_height = $detail_window.find('.i_s_detail_contents').height(),
+				container_height = $obj.height(),
+				top_offset = 0;
 
 			// determine height
 			obj.height = new_content_height;
@@ -434,6 +437,16 @@ var athletics = (function( app, $ ) {
 
 			// determine top
 			obj.top = pos_top + new_body_position.top;
+
+			// determine destination top
+
+			obj.dest_top = obj.top;
+
+			top_offset = container_height - (obj.top + obj.height);
+
+			if ( top_offset < 80 ) {
+				obj.dest_top = obj.top + top_offset - 80;
+			}
 
 			return obj;
 
@@ -453,7 +466,7 @@ var athletics = (function( app, $ ) {
 			$detail_window
 				.stop()
 				.animate({
-					'top' : properties.top + 'px',
+					'top' : properties.dest_top + 'px',
 					'height' : properties.height + 'px'
 				},
 				{
@@ -490,12 +503,15 @@ var athletics = (function( app, $ ) {
 				'top' : properties.top + 'px',
 				'left' : properties.left + 'px'
 			});
-			
+
+			properties = _get_expanded_datapoint_properties( $this, $detail_window );
+
 			// animate window
 			$detail_window.stop()
 				.animate({
 					'width' : '480px',
-					'height' : properties.height + 'px'
+					'height' : properties.height + 'px',
+					'top' : properties.dest_top
 				},
 				{
 					'duration' : 150,

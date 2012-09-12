@@ -25,7 +25,7 @@ var athletics = (function( app, $ ) {
 			$labelpoints = null,
 			_cur_color_scheme = null,
 			_datapoint_body_padding = 10,
-			_img_path = 'http://clients.athleticsnyc.com/forbes/infostory/',
+			_img_path = '',
 			_img_sprite = _img_path + 'img/sprite_infostory.png';
 			
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -732,6 +732,8 @@ var athletics = (function( app, $ ) {
 
 		function _center_datapoint_vertically( $jquery_obj ) {
 
+			return false;
+			
 			// vars
 			var total_height = $jquery_obj.outerHeight(),
 				window_height = $(window).height(),

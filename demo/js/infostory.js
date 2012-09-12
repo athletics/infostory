@@ -1,8 +1,9 @@
 /*
- *		Athletics Infostory js module:
+ *		Infostory js module:
  *			infostory.js
  *
  *		desc:
+ *			Controls behavior of the timeline infographic.
  *
  *		requires:
  *			jQuery

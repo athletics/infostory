@@ -478,6 +478,9 @@ var athletics = (function( app, $ ) {
 
 			// add datapoint content
 			$detail_window.find('.i_s_detail_contents').html( datapoint_content );
+			
+			//init tweets
+			_init_tweets( $detail_window );
 
 			//style contents
 			_style_detail_window();
@@ -763,7 +766,7 @@ var athletics = (function( app, $ ) {
 				'margin': '10px 0'
 			});
 			
-			$detail_window.find('img').css({
+			$detail_window.find('.i_s_copy img').css({
 				'float': 'right',
 				'border': '3px solid #ededed',
 				'margin': '0 0 10px 10px'
@@ -789,18 +792,11 @@ var athletics = (function( app, $ ) {
 			});
 			
 			$detail_window.find('ul.i_s_tweets').css({
-				'display': 'block',
-				'width': '100%',
-				'background': '#ededed',
-				'list-style-type': 'none',
-				'padding': 0,
-				'font': 'normal 12px/14px arial, sans-serif'
+				'display': 'none'
 			});
 			
-			$detail_window.find('ul.i_s_tweets').css({
-				'display': 'block',
-				'width': '100%',
-				'background': '#ededed'
+			$detail_window.find('.clear').css({
+				'clear': 'both'
 			});
 
 			// style close_btn
@@ -819,7 +815,131 @@ var athletics = (function( app, $ ) {
 			});
 			
 		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _init_tweets( $detail_window ) {
+			
+			//are there any tweets associated with this data point?
+			
+			// no, don't continue
+			if ( $detail_window.find('ul.i_s_tweets').length < 1 ) return false;
+			
+			// yes, create structure for tweets			
+			var tweet_html = '',
+				avatars_html = '';
+								
+			//add an avatar for each tweet
+			$detail_window.find('ul.i_s_tweets li').each(function(){
+				
+				var $this = $(this);
+				
+				avatars_html += '<img class="i_s_avatar" src="'+ $this.data('avatar-src') +'" alt="">';
+				
+			});
+		
+			//create basic shell for tweets
+			tweet_html += '<div class="i_s_tweet_previews">';
+			tweet_html += 	'<h5>From around the web:</h5>';
+			tweet_html += 	'<div class="i_s_avatars">'
+			tweet_html +=		avatars_html;
+			tweet_html +=		'<div class="clear"></div>'
+			tweet_html += 	'</div>';
+			tweet_html += 	'<div class="i_s_tweet_detail"></div>';
+			tweet_html += '</div>';
+						
+			// add this html to the detail window
+			$detail_window.find('.i_s_detail').append(tweet_html);
+				
+			//style tweet
+			$detail_window.find('.i_s_tweet_previews').css({
+				'display': 'block',
+				'width': '100%',
+				'background': '#ededed',
+				'list-style-type': 'none',
+				'padding': 0,
+				'font': 'normal 12px/14px arial, sans-serif'
+			});
+			
+			$detail_window.find('.i_s_tweet_previews h5').css({
+				'font': 'normal 11px/13px Verdana, arial, sans-serif',
+				'text-transform':'uppercase',
+				'color': '#999',
+				'margin': 0
+			});
+			
+			//style avatars
+			$detail_window.find('img.i_s_avatar').css({
+				'width': '30px',
+				'height': '30px',
+				'float': 'left',
+				'margin': '10px 10px 10px 0',
+				'border' : '1px'
+			});
+			
+			//attach mouseenter
+			$detail_window.find('img.i_s_avatar').each(function(){
+				
+				var $this = $(this),
+					avatar_src = $this.attr('src');
+					
+				$this.unbind('mouseenter').bind('mouseenter', function(){
+					_change_tweet ( $this, $detail_window, avatar_src );
+					
+				});
+			});
+			
+			//attach leave
+			$detail_window.find('img.i_s_avatar').unbind('mouseleave').bind('mouseleave', function(){
+				console.log('leave');
+			});
+		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _reset_tweet() {
+			
+			$detail_window.find('img.i_s_avatar').removeClass('i_s_active');
+			
+			$detail_window.find('img.i_s_avatar').css({
+				'border': 'none'
+			});
+			
+			$detail_window.find('.i_s_tweet_detail').html("");
+			
+		}
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _change_tweet( $detail_window, avatar_src ){
+			
+			//reset styling
+				//remove active class on all, hide tweet body
+			
+			//change tweet
+			
+			//if desired tweet already visible, stop.
+			
+			// else 
+			
+			//get variables
+			var $target_tweet = $detail_window.find('ul.i_s_tweets li[data-avatar-src="'+ avatar_src +'"]'),
+				tweet_text = $target_tweet.html(),
+				twitter_handle = $target_tweet.data('tweet-username'),
+				datetime = $target_tweet.data('datetime'),
+				tweet_url = $target_tweet.data('tweet-url');
+			
+			console.log( twitter_handle );
+			//show selected tweet
+			
+			
+
+			
+				//add active class to selected, show correct tweet body
+				//style accordingly
+			
+		}
+		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _init_bgs() {

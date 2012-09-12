@@ -838,11 +838,14 @@ var athletics = (function( app, $ ) {
 				'font-size': '10px',
 				'text-transform': 'uppercase',
 				'text-decoration' : 'none',
-				'position': 'relative'
+				'position': 'relative',
+				'-webkit-border-radius': '3px',
+				'-moz-border-radius': '3px',
+				'border-radius': '3px',
 			});
 			
 			$target.find('span.i_s_downarrow').css({
-				'display': 'block',
+				'display': 'block'
 			});
 		}
 		

@@ -420,11 +420,32 @@ var athletics = (function( app, $ ) {
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-		function _change_datapoint( $this, $detail_window ) {
+		function _get_expanded_datapoint_properties( $this, $detail_window ) {
 
-			var pos_top = $this.data('y'),
+			var obj = {},
+				pos_top = $this.data('y'),
+				pos_left = $this.data('x'),
 				new_body_position = $this.find('.i_s_body').position(),
 				new_content_height = $detail_window.find('.i_s_detail_contents').height();
+
+			// determine height
+			obj.height = new_content_height;
+
+			// determine left
+			obj.left = pos_left + new_body_position.left;
+
+			// determine top
+			obj.top = pos_top + new_body_position.top;
+
+			return obj;
+
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _change_datapoint( $this, $detail_window ) {
+
+			var properties = _get_expanded_datapoint_properties( $this, $detail_window );
 
 			//hide old contents
 			$detail_window.find('.i_s_detail_contents').css({
@@ -434,8 +455,8 @@ var athletics = (function( app, $ ) {
 			$detail_window
 				.stop()
 				.animate({
-					'top' : pos_top + new_body_position.top + 'px',
-					'height' : new_content_height + 'px'
+					'top' : properties.top + 'px',
+					'height' : properties.height + 'px'
 				},
 				{
 					'duration' : 200
@@ -451,9 +472,7 @@ var athletics = (function( app, $ ) {
 					'duration' : 200
 				});
 
-			$detail_window.find('.i_s_close_btn').css({
-				'display': 'block'
-			});
+			$detail_window.find('.i_s_close_btn').show();
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -463,31 +482,25 @@ var athletics = (function( app, $ ) {
 			// find initial heights & positions
 			var initial_height = $this.find('.i_s_body').height(),
 				initial_width = $this.find('.i_s_body').width(),
-				body_position = $this.find('.i_s_body').position(),
-				pos_left = $this.data('x'),
-				pos_top = $this.data('y'),
-				content_height = 0;
+				properties = _get_expanded_datapoint_properties( $this, $detail_window );
 
 			// position detail window
 			$detail_window.css({
 				'display': 'block',
 				'width': initial_width + 'px',
 				'height': initial_height + 'px',
-				'top' : pos_top + body_position.top + 'px',
-				'left' : pos_left + body_position.left + 'px'
+				'top' : properties.top + 'px',
+				'left' : properties.left + 'px'
 			});
-			
-			// find height of content
-			content_height = $detail_window.find('.i_s_detail_contents').height();
 			
 			// animate window
 			$detail_window.stop()
 				.animate({
 					'width' : '480px',
-					'height' : content_height + 'px'
+					'height' : properties.height + 'px'
 				},
 				{
-					'duration' : 200,
+					'duration' : 150,
 					'complete' : function () {
 
 						$detail_window.addClass('window_open');

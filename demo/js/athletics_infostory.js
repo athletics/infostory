@@ -868,8 +868,9 @@ var athletics = (function( app, $ ) {
 				'z-index' : 3,
 				'text-align' : 'right',
 				'font-family' : 'Helvetica Neue, Helvetica, Arial',
-				'font-size' : '12px',
-				'line-height' : '18px'
+				'font-size' : '11px',
+				'line-height' : '18px',
+				'color' : '#666666'
 			});
 			
 			$credit.find('span.i_s_copy').css({

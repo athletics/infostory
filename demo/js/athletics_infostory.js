@@ -137,7 +137,7 @@ var athletics = (function( app, $ ) {
 			
 			$controls.find('div.i_s_option span.i_s_label').css({
 				'padding' : '3px 10px',
-				'display' : 'block'
+				'display' : 'block',
 			});
 			
 			// position controls
@@ -159,9 +159,7 @@ var athletics = (function( app, $ ) {
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _init_year_markers() {
-			
-			console.log ('init');
-			
+						
 			$year_marker = $datapoints.find('span.i_s_year');
 				
 			$year_marker.each(function(){
@@ -797,6 +795,13 @@ var athletics = (function( app, $ ) {
 				'text-transform': 'uppercase',
 				'text-decoration' : 'none'
 			});
+			
+			$target.find('span.i_s_downarrow').css({
+				'display': 'block',
+				'background' : 'red',
+				'width' : 5,
+				'height' : 5
+			})
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

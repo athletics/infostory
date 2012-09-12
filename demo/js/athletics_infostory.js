@@ -82,7 +82,7 @@ var athletics = (function( app, $ ) {
 				'background' : 'url("'+ _img_sprite +'") no-repeat 0 -80px'
 			});
 			
-			$obj.find('.i_s_header h1').css({
+			$obj.find('.i_s_header h2').css({
 				'font': 'normal 32px/36px Georgia, serif',
 				'margin': '10px 0'
 			});
@@ -1090,7 +1090,7 @@ var athletics = (function( app, $ ) {
 			$bgs.css({
 				'position' : 'absolute',
 				'z-index' : 1,
-				'top' : '220px',
+				'top' : '190px',
 				'left' : 0
 			});
 			

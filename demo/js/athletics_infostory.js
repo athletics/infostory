@@ -164,6 +164,9 @@ var athletics = (function( app, $ ) {
 			// attach events
 			$controls.find('div.i_s_option').on('click',function(){
 				var $this = $(this);
+
+				if ($this.hasClass('i_s_active')) return false;
+
 				_change_bg(
 					$this.data('id')
 				);
@@ -336,7 +339,7 @@ var athletics = (function( app, $ ) {
 				});
 				
 				// attach mouseenter
-				$this.unbind('mouseenter').bind('mouseenter', function(){
+				$this.off('mouseenter').on('mouseenter', function(){
 					
 					$this.find('.i_s_body').addClass('i_s_hovering');
 					
@@ -356,7 +359,7 @@ var athletics = (function( app, $ ) {
 				});
 				
 				//attach mouseleave
-				$this.unbind('mouseleave').bind('mouseleave', function(){
+				$this.off('mouseleave').on('mouseleave', function(){
 					
 					$this.find('.i_s_body').removeClass('i_s_hovering');
 					
@@ -385,26 +388,6 @@ var athletics = (function( app, $ ) {
 				pos_left = $this.data('x'),
 				pos_top = $this.data('y'),
 				offset = $this.data('offset');
-				
-			//setting up basic detail_window styling
-			$detail_window.css({
-				'z-index': 10,
-				'position' : 'absolute',
-				'background' : "#fff",
-				'-moz-box-shadow': '0 0 5px #666',
-				'-webkit-box-shadow': '0 0 5px #666',
-				'box-shadow': '0 0 5px #666',
-				'padding': _datapoint_body_padding + 'px'
-			});
-			
-			$detail_window.find('span.i_s_arrow').css({
-				'width': '20',
-				'height': '26px',
-				'position': 'absolute',
-				'left': '-20px',
-				'top': '2px',
-				'background': 'url("'+ _img_sprite +'") no-repeat 0 0'
-			});
 			
 			// add datapoint content
 			$detail_window.find('.i_s_detail_contents').html( datapoint_content );
@@ -413,7 +396,7 @@ var athletics = (function( app, $ ) {
 			_style_detail_window();
 
 			// attach click events to close_btn
-			$detail_window.find('.i_s_close_btn').unbind('click').bind('click', function(){
+			$detail_window.find('.i_s_close_btn').off('click').on('click', function(){
 
 				$detail_window
 					.removeClass('window_open')
@@ -428,7 +411,7 @@ var athletics = (function( app, $ ) {
 			} else {
 				_change_datapoint( $this, $detail_window );
 			}
-			
+
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -488,7 +471,12 @@ var athletics = (function( app, $ ) {
 					'height' : properties.height + 'px'
 				},
 				{
-					'duration' : 150
+					'duration' : 150,
+					'complete' : function () {
+
+						_center_datapoint_vertically( $detail_window );
+
+					}
 				});
 				
 			//reveal new contents
@@ -502,6 +490,14 @@ var athletics = (function( app, $ ) {
 				});
 
 			$detail_window.find('.i_s_close_btn').show();
+
+			$detail_window.find('span.i_s_arrow')
+				.stop()
+				.animate({
+					'top' : properties.arrow_top + 'px'
+				},{
+					'duration' : 150
+				});
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -540,6 +536,8 @@ var athletics = (function( app, $ ) {
 						$detail_window.find('.i_s_close_btn').css({
 							'display': 'block'
 						});
+
+						_center_datapoint_vertically( $detail_window );
 					}
 				});
 
@@ -551,15 +549,69 @@ var athletics = (function( app, $ ) {
 					'duration' : 150
 				});
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		function _center_datapoint_vertically( $jquery_obj ) {
+
+			// vars
+			var total_height = $jquery_obj.outerHeight(),
+				window_height = $(window).height(),
+				$header = $('header.global'),
+				header_offset = 0,
+				duration = 200,
+				new_scrolltop = 0;
+			
+			// is there a header on the page?
+			if ($header.length > 0) header_offset = $header.height() + 20;
+			
+			// vertically align?
+			if (total_height < window_height) {
+				
+				// scroll page so that module will be vertically centered
+				new_scrolltop = ($jquery_obj.offset().top - Math.round((window_height - total_height) / 2)) - header_offset;
+
+			} else {
+				
+				// scroll page so that module begins at top of page
+				new_scrolltop = $jquery_obj.offset().top - header_offset;
+			}
+			
+			// animate scroll
+			$('html,body').animate(
+				{
+					'scrollTop' : new_scrolltop
+				},
+				{
+					'duration' : duration
+				}
+			);
+
+		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _style_detail_window() {
 			
 			var $detail_window = $obj.find('.i_s_detail_window');
-			
+
 			$detail_window.css({
-				'padding': '10px'
+				'z-index': 10,
+				'position' : 'absolute',
+				'background' : "#fff",
+				'-moz-box-shadow': '0 0 5px #666',
+				'-webkit-box-shadow': '0 0 5px #666',
+				'box-shadow': '0 0 5px #666',
+				'padding' : _datapoint_body_padding + 'px'
+			});
+			
+			$detail_window.find('span.i_s_arrow').css({
+				'width': '20px',
+				'height': '26px',
+				'position': 'absolute',
+				'left': '-20px',
+				'top': '2px',
+				'background': 'url("'+ _img_sprite +'") no-repeat 0 0'
 			});
 			
 			$detail_window.find('.i_s_detail_contents').css({
@@ -639,106 +691,6 @@ var athletics = (function( app, $ ) {
 			});
 			
 		}
-		
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		
-		/*function _reset_datapoint_styling() {
-			
-			$datapoints.find('div.i_s_datapoint').each(function(){
-				
-				var $this = $(this);
-				
-				//set up basic styling for default view
-				$this.css({
-					'display':'block',
-					'width': '480px',
-					'position':'absolute',
-					'top': $this.data('y') + 'px',
-					'left': $this.data('x') + 'px',
-					'padding' : '10px',
-					'background': 'none',
-					'-moz-box-shadow': 'none',
-					'-webkit-box-shadow': 'none',
-					'box-shadow': 'none',
-					'z-index': 3
-				});
-				
-				$this.find('h3').css({
-					'font': 'normal 16px/20px Georgia, serif',
-					'margin': '5px 0 0'
-				})
-				
-				$this.find('h5').css({
-					'font': 'normal 11px/13px Verdana, arial, sans-serif',
-					'text-transform':'uppercase',
-					'color': '#999',
-					'margin': 0
-				})
-				
-				//don't show the details of each point yet
-				$this.find('.i_s_detail').css({
-					'display':'none'
-				});
-			
-			});
-			
-		}
-		
-		
-		
-		function _reveal_datapoint_details( $this ) {
-						
-			$this.css({
-				'width': '480px',
-				'z-index' : 10,
-			});
-			
-			$this.find('.i_s_detail').css({
-				'display': 'block',
-				'font': 'normal 15px/19px Georgia, serif'
-			});
-			
-			$this.find('.i_s_detail a').css({
-				'color': '#0F2D5F',
-			})
-			
-			$this.find('h3').css({
-				'font': 'bold 18px/22px Georgia, serif',
-				'margin': '10px 0'
-			});
-			
-			$this.find('img').css({
-				'float': 'right',
-				'border': '3px solid #ededed',
-				'margin': '0 0 10px 10px'
-			})
-			
-			$this.find('ul.i_s_related_links').css({
-				'list-style-type':'none',
-				'padding': '0',
-				'margin-top': '20px'
-			})
-			
-			$this.find('ul.i_s_related_links li').css({
-				'font': 'bold 13px/15px Georgia, serif',
-				'margin': '10px 0'
-			})
-			
-			$this.find('ul.i_s_related_links li a').css({
-				'text-decoration': 'none'
-			})
-			
-			$this.find('ul.i_s_related_links li a:hover').css({
-				'text-decoration': 'underline'
-			})
-			
-			//TEMPORARILY hide tweets
-			$this.find('ul.i_s_tweets').css({
-				'display': 'none'
-			})
-			
-		};
-		*/
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
@@ -813,17 +765,17 @@ var athletics = (function( app, $ ) {
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		function _reset_bg_controls() {
-			$controls.find('div.i_s_option').css({
-				'background-color' : '#fff',
-				'color': '#666',
-				'font-weight': 'normal',
-				'text-transform': 'none',
-				'text-decoration' : 'underline'
-			});
-			
-			$controls.find('span.i_s_downarrow').css({
-				'display': 'none'
-			});
+			$controls.find('div.i_s_option')
+				.removeClass('i_s_active')
+				.css({
+					'background-color' : '#fff',
+					'color': '#666',
+					'font-weight': 'normal',
+					'text-transform': 'none',
+					'text-decoration' : 'underline'
+				});
+				
+			$controls.find('span.i_s_downarrow').hide();
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -846,10 +798,10 @@ var athletics = (function( app, $ ) {
 				'-moz-border-radius': '3px',
 				'border-radius': '3px'
 			});
+
+			$target.addClass('i_s_active');
 			
-			$target.find('span.i_s_downarrow').css({
-				'display': 'block'
-			});
+			$target.find('span.i_s_downarrow').show();
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

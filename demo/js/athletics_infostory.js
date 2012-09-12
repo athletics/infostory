@@ -363,7 +363,7 @@ var athletics = (function( app, $ ) {
 				
 				//attach mouseleave
 				$this.off('mouseleave').on('mouseleave', function(){
-					
+
 					$this.find('.i_s_body').removeClass('i_s_hovering');
 					
 					$this.find('.i_s_body').css({
@@ -374,14 +374,24 @@ var athletics = (function( app, $ ) {
 						'z-index':'3'
 					});
 
-					$plotter.find('.i_s_line, .i_s_point').css({
-						'background': '#000000'
-					});
-				
+					if (!$this.hasClass('i_s_active')) {
+						$plotter.find('.i_s_line, .i_s_point').css({
+							'background': '#000000'
+						});
+					}
+					
 				});
 
 				// attach click event
-				$this.off('click').on('click', _launch_datapoint_details );
+				$this.off('click').on('click', function(){
+
+					_launch_datapoint_details.call( this );
+
+					$plotter.find('.i_s_line, .i_s_point').css({
+						'background': _cur_color_scheme
+					});
+
+				});
 				
 			});
 			
@@ -398,7 +408,7 @@ var athletics = (function( app, $ ) {
 				pos_left = $this.data('x'),
 				pos_top = $this.data('y'),
 				offset = $this.data('offset');
-			
+
 			// add datapoint content
 			$detail_window.find('.i_s_detail_contents').html( datapoint_content );
 
@@ -420,6 +430,11 @@ var athletics = (function( app, $ ) {
 				_change_datapoint( $this, $detail_window );
 			}
 
+			// trigger mouseleave on all the datapoints
+			$datapoints.find('div.i_s_datapoint').each(function(){
+				$(this).trigger('mouseleave');
+			});
+
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -436,6 +451,11 @@ var athletics = (function( app, $ ) {
 
 			// mark all other datapoints as inactive
 			$datapoints.find('div.i_s_datapoint').removeClass('i_s_active');
+
+			// trigger mouseleave on all the datapoints
+			$datapoints.find('div.i_s_datapoint').each(function(){
+				$(this).trigger('mouseleave');
+			});
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -517,10 +537,16 @@ var athletics = (function( app, $ ) {
 
 			$detail_window.find('span.i_s_arrow')
 				.stop()
+				.css('opacity', 0)
 				.animate({
 					'top' : properties.arrow_top + 'px'
 				},{
-					'duration' : 150
+					'duration' : 150,
+					'complete' : function () {
+						$detail_window.find('span.i_s_arrow')
+							.stop()
+							.animate({'opacity':1},{'duration':300});
+					}
 				});
 		}
 
@@ -567,10 +593,16 @@ var athletics = (function( app, $ ) {
 
 			$detail_window.find('span.i_s_arrow')
 				.stop()
+				.css('opacity',0)
 				.animate({
 					'top' : properties.arrow_top + 'px'
 				},{
-					'duration' : 150
+					'duration' : 150,
+					'complete' : function () {
+						$detail_window.find('span.i_s_arrow')
+							.stop()
+							.animate({'opacity':1},{'duration':300});
+					}
 				});
 		}
 
@@ -635,7 +667,7 @@ var athletics = (function( app, $ ) {
 				'position': 'absolute',
 				'left': '-20px',
 				'top': '2px',
-				'background': 'url("'+ _img_sprite +'") no-repeat 0 0'
+				'background': 'url("'+ _img_sprite +'") no-repeat 3px 0px'
 			});
 			
 			$detail_window.find('.i_s_detail_contents').css({
@@ -810,6 +842,8 @@ var athletics = (function( app, $ ) {
 		function _change_bg_control( id ) {
 			
 			_reset_bg_controls();
+
+			_close_datapoint();
 			
 			var $target = $controls.find('div.i_s_option[data-id="'+ id +'"]');
 			

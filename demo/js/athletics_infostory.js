@@ -390,7 +390,7 @@ var athletics = (function( app, $ ) {
 				'position': 'absolute',
 				'left': '-20px',
 				'top': '2px',
-				'background': 'url("img/sprite_arrows.png") no-repeat 0 0'
+				'background': 'url("img/sprite_infostory.png") no-repeat 0 0'
 			});
 			
 			// add datapoint content
@@ -589,7 +589,7 @@ var athletics = (function( app, $ ) {
 				'position': 'absolute',
 				'width': '28px',
 				'height': '28px',
-				'background': 'url("img/sprite_close_btn.png") no-repeat 0 0',
+				'background': 'url("img/sprite_infostory.png") no-repeat 0 -40px',
 				'top': 0,
 				'right': 0,
 				'-webkit-border-radius': '50%',

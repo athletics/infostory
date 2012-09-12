@@ -849,7 +849,7 @@ var athletics = (function( app, $ ) {
 			tweet_html += '</div>';
 						
 			// add this html to the detail window
-			$detail_window.find('.i_s_detail').append(tweet_html);
+			$detail_window.find('.i_s_detail_contents').append(tweet_html);
 				
 			//style tweet
 			$detail_window.find('.i_s_tweet_previews').css({
@@ -857,8 +857,9 @@ var athletics = (function( app, $ ) {
 				'width': '100%',
 				'background': '#ededed',
 				'list-style-type': 'none',
-				'padding': 0,
-				'font': 'normal 12px/14px arial, sans-serif'
+				'padding': '10px 0',
+				'font': 'normal 13px/16px arial, sans-serif',
+				'color': '#000'
 			});
 			
 			$detail_window.find('.i_s_tweet_previews h5').css({
@@ -868,23 +869,27 @@ var athletics = (function( app, $ ) {
 				'margin': 0
 			});
 			
+			$detail_window.find('.i_s_detail span.i_s_content a').css({
+				'color': '#000'
+			});
+			
 			//style avatars
 			$detail_window.find('img.i_s_avatar').css({
 				'width': '30px',
 				'height': '30px',
 				'float': 'left',
-				'margin': '10px 10px 10px 0',
-				'border' : '1px'
+				'margin': '10px 5px 10px 0',
+				'border' : '2px solid #ededed'
 			});
-			
+		
 			//attach mouseenter
 			$detail_window.find('img.i_s_avatar').each(function(){
 				
 				var $this = $(this),
-					avatar_src = $this.attr('src');
+					src = $this.attr('src');
 					
 				$this.unbind('mouseenter').bind('mouseenter', function(){
-					_change_tweet ( $this, $detail_window, avatar_src );
+					_change_tweet ( $detail_window, src );
 					
 				});
 			});
@@ -893,28 +898,35 @@ var athletics = (function( app, $ ) {
 			$detail_window.find('img.i_s_avatar').unbind('mouseleave').bind('mouseleave', function(){
 				console.log('leave');
 			});
+			
+			
+			// by default, show first tweet
+			var src= $detail_window.find('ul.i_s_tweets li:first').data('avatar-src');
+			
+			_change_tweet( $detail_window, src );
+			
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _reset_tweet() {
+		function _reset_tweet( $detail_window ) {
 			
 			$detail_window.find('img.i_s_avatar').removeClass('i_s_active');
 			
 			$detail_window.find('img.i_s_avatar').css({
-				'border': 'none'
+				'border' : '2px solid #ededed'
 			});
 			
-			$detail_window.find('.i_s_tweet_detail').html("");
+			$detail_window.find('.i_s_tweet_detail').html('');
 			
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _change_tweet( $detail_window, avatar_src ){
-			
+		function _change_tweet( $detail_window, src ){
+						
 			//reset styling
-				//remove active class on all, hide tweet body
+			 _reset_tweet( $detail_window );
 			
 			//change tweet
 			
@@ -923,20 +935,64 @@ var athletics = (function( app, $ ) {
 			// else 
 			
 			//get variables
-			var $target_tweet = $detail_window.find('ul.i_s_tweets li[data-avatar-src="'+ avatar_src +'"]'),
+			var $target_tweet = $detail_window.find('ul.i_s_tweets li[data-avatar-src="'+ src +'"]'),
+				$tweet_detail = $detail_window.find('.i_s_tweet_detail')
 				tweet_text = $target_tweet.html(),
+				tweet_name = $target_tweet.data('tweet-name'),
 				twitter_handle = $target_tweet.data('tweet-username'),
 				datetime = $target_tweet.data('datetime'),
-				tweet_url = $target_tweet.data('tweet-url');
+				tweet_url = $target_tweet.data('tweet-url'),
+				tweet_detail_html = '';
+						
+			//set up selected tweet
+			tweet_detail_html += '<p class="i_s_tweet_name">';
+			tweet_detail_html += 	'<span class="i_s_tweet_name">' + tweet_name + '</span>';
+			tweet_detail_html += 	'<span class="i_s_twitter_handle"> @' + twitter_handle + '</span>';
+			tweet_detail_html += '</p>';
+			tweet_detail_html += tweet_text;
+			tweet_detail_html += '<p class="i_s_tweet_time">' + datetime + '</p>';
 			
-			console.log( twitter_handle );
-			//show selected tweet
+			// add target tweet 
+			$detail_window.find('.i_s_tweet_detail').html(tweet_detail_html);
 			
+			//add active class to avatar shown
+			$detail_window.find('img.i_s_avatar[src="'+ src +'"]').addClass('i_s_active');
+			
+			//style tweet
+			$tweet_detail.find('p.i_s_tweet_name').css({
+				'font-size': '13px',
+				'color': '#000',
+				'margin': 0,
+				'font-weight' : 'bold'
+			});
+			
+			$tweet_detail.find('span.i_s_content').css({
+				'margin': '5px 0',
+				'display': 'block'
+			});
+			
+			$detail_window.find('.i_s_detail span.i_s_content a').css({
+				'color': '#000'
+			});
+			
+			$tweet_detail.find('span.i_s_twitter_handle').css({
+				'font-size': '11px',
+				'color': '#999',
+				'font-weight': 'normal'
+			});
+			
+			$tweet_detail.find('p.i_s_tweet_time').css({
+				'font-size': '11px',
+				'color': '#999',
+				'margin': 0
+			});
+			
+			$detail_window.find('img.i_s_avatar.i_s_active').css({
+				'border': '2px solid #069EEC'
+			});
 			
 
 			
-				//add active class to selected, show correct tweet body
-				//style accordingly
 			
 		}
 		

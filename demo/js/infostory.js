@@ -695,7 +695,7 @@ var athletics = (function( app, $ ) {
 		function _center_datapoint_vertically( $jquery_obj ) {
 
 			return false;
-			
+
 			// vars
 			var total_height = $jquery_obj.outerHeight(),
 				window_height = $(window).height(),
@@ -1044,18 +1044,11 @@ var athletics = (function( app, $ ) {
 				'color': '#999'
 			});
 			
-			$tweet_detail.find('p.i_s_tweet_time').css({
-				'font-size': '10px',
-				'color': '#999',
-				'margin': 0
-			});
-			
+			$tweet_detail.find('p.i_s_tweet_time').hide();
+
 			$detail_window.find('img.i_s_avatar.i_s_active').css({
 				'border': '2px solid #069EEC'
 			});
-			
-
-			
 			
 		}
 		

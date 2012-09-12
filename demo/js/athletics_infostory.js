@@ -21,6 +21,7 @@ var athletics = (function( app, $ ) {
 			$border = null,
 			$credit = null,
 			$datapoints = null,
+			$labelpoints = null,
 			_cur_color_scheme = null,
 			_datapoint_body_padding = 10,
 			_img_sprite = 'img/sprite_infostory.png';
@@ -32,11 +33,12 @@ var athletics = (function( app, $ ) {
 			$obj = $('div.athletics.infostory[data-infostory-name="forbes_timeline"]');
 			
 			$datapoints = $obj.find('div.i_s_datapoints');
+			$labelpoints = $obj.find('div.i_s_labelpoints');
 			
 			if ($obj.length != 1) return false;
 			
 			_init_controls();
-			_init_year_markers();
+			_init_label_points();
 			_init_data_points();
 			_init_bgs();
 			_init_border();
@@ -55,8 +57,8 @@ var athletics = (function( app, $ ) {
 			$obj.find('.i_s_header').css({
 				'width': '100%',
 				'text-align': 'center',
-				'padding-bottom': '20px',
-				'border-bottom': '4px double #000'
+				'padding-bottom': '12px',
+				'border-bottom': '4px double #ccc'
 			});
 			
 			$obj.find('.i_s_header span.i_s_timeline_label').css({
@@ -65,9 +67,9 @@ var athletics = (function( app, $ ) {
 				'text-transform': 'uppercase',
 				'letter-spacing' : '1px',
 				'color': '#fff',
-				'padding': '5px',
+				'padding': '3px 6px',
 				'background' : '#000',
-				'margin-bottom' : '10px'
+				'margin-bottom' : '5px'
 			});
 			
 			$obj.find('.i_s_header span.i_s_forbes_logo').css({
@@ -125,8 +127,8 @@ var athletics = (function( app, $ ) {
 			$controls.css({
 				'position' : 'absolute',
 				'z-index' : 4,
-				'top' : 170,
-				'left' : 170,
+				'top' : '150px',
+				'left' : '170px',
 				'font-size' : '14px'
 			});
 			
@@ -177,14 +179,15 @@ var athletics = (function( app, $ ) {
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		function _init_year_markers() {
+		function _init_label_points() {
 						
-			$year_marker = $datapoints.find('span.i_s_year');
+			$label_point = $labelpoints.find('span.i_s_labelpoint');
 				
-			$year_marker.each(function(){
+			$label_point.each(function(){
 				
 				//setting up variables for position
 				var $this = $(this),
+					type = $this.data('type'),
 					pos_left = $this.data('x'),
 					pos_top = $this.data('y');
 				
@@ -398,20 +401,20 @@ var athletics = (function( app, $ ) {
 			// attach keyboard navigation
 
 			// keyboard arrows
-				$(document).keydown(function(e){
-					
-					if (e.keyCode == 37) { // left arrow
-						_goto_prev_datapoint();
-						return false;
+			$(document).keydown(function(e){
+				
+				if (e.keyCode == 37) { // left arrow
+					_goto_prev_datapoint();
+					return false;
 
-					} else if (e.keyCode == 39) { // right arrow
-						_goto_next_datapoint();
-						return false;
+				} else if (e.keyCode == 39) { // right arrow
+					_goto_next_datapoint();
+					return false;
 
-					} else if (e.keyCode == 27) { // escape key
-						_close_datapoint();
-					}
-				});
+				} else if (e.keyCode == 27) { // escape key
+					_close_datapoint();
+				}
+			});
 			
 		}
 
@@ -570,6 +573,7 @@ var athletics = (function( app, $ ) {
 					'duration' : 150,
 					'complete' : function () {
 
+						$detail_window.css('overflow','visible');
 						_center_datapoint_vertically( $detail_window );
 
 					}
@@ -902,7 +906,7 @@ var athletics = (function( app, $ ) {
 			var $target = $controls.find('div.i_s_option[data-id="'+ id +'"]');
 			
 			$target.css({
-				'background-color' : '#069eec',
+				'background-color' : _cur_color_scheme,
 				'color': '#fff',
 				'font-weight': 'bold',
 				'font-size': '10px',
@@ -916,6 +920,11 @@ var athletics = (function( app, $ ) {
 
 			$target.addClass('i_s_active');
 			
+			// determine which image sprite to use
+			$target.find('span.i_s_downarrow').css({
+				'background' : 'url("'+ _img_sprite +'") no-repeat '+ $target.find('span.i_s_downarrow').data('sprite-x') +'px 0'
+			});
+
 			$target.find('span.i_s_downarrow').show();
 		}
 		

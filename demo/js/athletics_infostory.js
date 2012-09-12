@@ -804,6 +804,20 @@ var athletics = (function( app, $ ) {
 			$detail_window.find('.clear').css({
 				'clear': 'both'
 			});
+			
+			$detail_window.find('.i_s_timeline_nav').css({
+				'font': 'normal 11px/14px Verdana, serif',
+				'float': 'right',
+				'margin-right' : '30px',
+				'position' : 'relative'
+			});
+			
+			$detail_window.find('.i_s_timeline_nav span.i_s_nav_arrow').css({
+				'background': 'url("'+ _img_sprite +'") no-repeat -20px 0',
+				'width':'8px',
+				'height':'12px'
+			})
+			
 
 			// style close_btn
 			$detail_window.find('.i_s_close_btn').css({
@@ -812,7 +826,7 @@ var athletics = (function( app, $ ) {
 				'width': '28px',
 				'height': '28px',
 				'background': 'url("'+ _img_sprite +'") no-repeat 0 -40px',
-				'top': 0,
+				'top': '3px',
 				'right': 0,
 				'-webkit-border-radius': '50%',
 				'-moz-border-radius': '50%',

@@ -21,8 +21,8 @@ var athletics = (function( app, $ ) {
 			$border = null,
 			$credit = null,
 			$datapoints = null,
-
-			_datapoint_body_padding = 10;
+			_datapoint_body_padding = 10,
+			_img_sprite = 'img/sprite_infostory.png';
 			
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
@@ -75,7 +75,7 @@ var athletics = (function( app, $ ) {
 				'right': 0,
 				'width' : '75px',
 				'height': '20px',
-				'background' : 'url("img/sprite_infostory.png") no-repeat 0 -80px',
+				'background' : 'url("'+ _img_sprite +'") no-repeat 0 -80px'
 			});
 			
 			$obj.find('.i_s_header h1').css({
@@ -141,7 +141,7 @@ var athletics = (function( app, $ ) {
 			
 			$controls.find('div.i_s_option span.i_s_label').css({
 				'padding' : '3px 10px',
-				'display' : 'block',
+				'display' : 'block'
 			});
 			
 			$controls.find('span.i_s_downarrow').css({
@@ -150,10 +150,10 @@ var athletics = (function( app, $ ) {
 				'bottom' : '-5px',
 				'left': '50%',
 				'margin-left': '-6px',
-				'background' : 'url("img/sprite_infostory.png") no-repeat -70px 0',
+				'background' : 'url("'+ _img_sprite +'") no-repeat -70px 0',
 				'width' : '12px',
 				'height' : '5px'
-			})
+			});
 			
 			// position controls
 			$controls.find('div.i_s_option').css({
@@ -403,7 +403,7 @@ var athletics = (function( app, $ ) {
 				'position': 'absolute',
 				'left': '-20px',
 				'top': '2px',
-				'background': 'url("img/sprite_infostory.png") no-repeat 0 0'
+				'background': 'url("'+ _img_sprite +'") no-repeat 0 0'
 			});
 			
 			// add datapoint content
@@ -488,7 +488,7 @@ var athletics = (function( app, $ ) {
 					'height' : properties.height + 'px'
 				},
 				{
-					'duration' : 200
+					'duration' : 150
 				});
 				
 			//reveal new contents
@@ -498,7 +498,7 @@ var athletics = (function( app, $ ) {
 					'opacity' : 1
 				},
 				{
-					'duration' : 200
+					'duration' : 150
 				});
 
 			$detail_window.find('.i_s_close_btn').show();
@@ -629,7 +629,7 @@ var athletics = (function( app, $ ) {
 				'position': 'absolute',
 				'width': '28px',
 				'height': '28px',
-				'background': 'url("img/sprite_infostory.png") no-repeat 0 -40px',
+				'background': 'url("'+ _img_sprite +'") no-repeat 0 -40px',
 				'top': 0,
 				'right': 0,
 				'-webkit-border-radius': '50%',
@@ -844,7 +844,7 @@ var athletics = (function( app, $ ) {
 				'position': 'relative',
 				'-webkit-border-radius': '3px',
 				'-moz-border-radius': '3px',
-				'border-radius': '3px',
+				'border-radius': '3px'
 			});
 			
 			$target.find('span.i_s_downarrow').css({

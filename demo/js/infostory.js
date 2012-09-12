@@ -39,6 +39,13 @@ var athletics = (function( app, $ ) {
 			
 			if ($obj.length != 1) return false;
 			
+			// if we're on a mobile device, use the fallback
+			if ($('html').hasClass('touch')) {
+				
+				_use_mobile_alternative();
+				return false;
+			}
+			
 			_init_controls();
 			_init_label_points();
 			_init_data_points();
@@ -98,6 +105,37 @@ var athletics = (function( app, $ ) {
 			
 			_initialized = true;
 
+		}
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		
+		function _use_mobile_alternative() {
+			
+			var mobile_html = $obj.find('div.i_s_mobile_alternate').html(),
+				mobile_bg_src = $obj.find('div.i_s_mobile_alternate span.i_s_bg').data('img-src');
+				mobile_bg = '<img src="' + mobile_bg_src +'" alt="">';
+							
+			//replace contents with mobile alternative
+			$obj.html( mobile_html );
+			
+			//add mobile img as background
+			$obj.find('span.i_s_bg').html( mobile_bg );
+			
+			//style mobile fallback
+			$obj.css({
+				'width': '300px'
+			});
+			
+			$obj.find('span.i_s_bg').css({
+				'display':'block',
+				'width': '300px',
+				'margin-bottom': '30px'
+			});
+			
+			$obj.find('span.i_s_msg').css({
+				'font':'italic 14px/18px Georgia, serif',
+				'color': '#666'
+			});
 		}
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

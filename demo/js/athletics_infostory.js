@@ -69,10 +69,13 @@ var athletics = (function( app, $ ) {
 				'margin-bottom' : '10px'
 			});
 			
-			$obj.find('.i_s_header img').css({
+			$obj.find('.i_s_header span.i_s_forbes_logo').css({
 				'position': 'absolute',
 				'top': 0,
-				'right': 0
+				'right': 0,
+				'width' : '75px',
+				'height': '20px',
+				'background' : 'url("img/sprite_infostory.png") no-repeat 0 -80px',
 			});
 			
 			$obj.find('.i_s_header h1').css({

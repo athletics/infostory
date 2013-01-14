@@ -38,6 +38,9 @@ var athletics = (function( app, $ ) {
 			$labelpoints = $obj.find('div.i_s_labelpoints');
 			
 			if ($obj.length != 1) return false;
+
+			// set img_path
+			if ($obj.data('img-path')) _img_path = $obj.data('img-path');
 			
 			_init_controls();
 			_init_label_points();
